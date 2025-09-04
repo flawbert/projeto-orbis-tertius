@@ -38,6 +38,7 @@
 
       .works-section(v-if="character.works && character.works.length > 0")
         h3.works-title Obras
+        Divider(orientation="horizontal" color="black")
         .works-grid
           WorkCard(
             v-for="work in character.works"
@@ -47,17 +48,8 @@
             :date="work.date"
             :description="work.description"
           )
-      .recommended-interviews
-        h3.interviews-title Entrevistas recomendadas
-        .interviews-grid
-          InterviewCard(
-            v-for="interview in recommendedInterviews"
-            :key="interview.id"
-            :title="interview.title"
-            :subtitle="interview.subtitle"
-            :date="interview.date"
-            :image="interview.image"
-          )
+
+      RecommendedInterviewsSection(:interviews="recommendedInterviews")
 
   div(v-else)
     .not-found-container
@@ -65,7 +57,6 @@
 </template>
 
 <script setup lang="ts">
-import Divider from "~/components/Divider.vue";
 import { useCharactersStore } from "~/store/characters";
 import type { Character, Interview, Work } from "~/types";
 
@@ -288,26 +279,12 @@ onUnmounted(() => {
     margin-bottom: $spacing-xl;
 
     .works-title {
-      font-size: 1.5rem;
-      margin-bottom: $spacing-lg;
+      font-size: $font-size-h2;
     }
 
     .works-grid {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-      gap: $spacing-lg;
-    }
-  }
-
-  .recommended-interviews {
-    .interviews-title {
-      font-size: 1.5rem;
-      margin-bottom: $spacing-lg;
-    }
-
-    .interviews-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
       gap: $spacing-lg;
     }
   }

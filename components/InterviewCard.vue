@@ -63,11 +63,9 @@ defineProps({
     h4 {
       font-size: 1.2rem;
       margin-bottom: $spacing-sm;
-      color: $primary-color;
     }
 
     .subtitle {
-      color: $accent-color;
       margin-bottom: $spacing-xs;
     }
 
