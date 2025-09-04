@@ -1,7 +1,7 @@
 <template lang="pug">
-.wrapper
+.wrapper(:style="style")
   .recommended-interviews
-    h3.interviews-title Entrevistas recomendadas
+    h3.interviews-title {{props.title}}
     Divider(orientation="horizontal" color="blue")
     .interviews-grid
       NuxtLink(
@@ -17,14 +17,30 @@
           :image="interview.image"
         )
 </template>
+
 <script setup lang="ts">
 import type { Interview } from "~/types";
 
-const props = defineProps({
-  interviews: {
-    type: Array<Interview>,
-    required: true,
-  },
+const props = withDefaults(
+  defineProps<{
+    title: string;
+    interviews: Interview[];
+    background?: string;
+  }>(),
+  {
+    title: "Default",
+    interviews: () => [],
+    background: "white",
+  }
+);
+
+const background = computed(() => {
+  if (props.background === "blue") return "var(--primary-lightest-blue)";
+  if (props.background == "white") return props.background;
+});
+
+const style = reactive({
+  "background-color": background.value,
 });
 </script>
 
@@ -52,7 +68,7 @@ const props = defineProps({
 
     .interviews-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
       gap: $spacing-lg;
 
       a {

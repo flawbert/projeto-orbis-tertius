@@ -19,19 +19,7 @@ div
         v-for="(interviews, role) in groupedByRole"
         :key="role"
       )
-        h2.section-title {{ roleLabels[role] || role }}
-        .interviews-grid
-          NuxtLink(
-            v-for="(interview, index) in interviews"
-            :key="index"
-            :to="`/caracteres/${interview.slug}`"
-          )
-            InterviewCard(
-              :title="interview.title"
-              :subtitle="interview.subtitle"
-              :date="interview.date"
-              :image="interview.image"
-            )
+        InterviewsSection(:interviews="interviews" :title="roleLabels[role] || role" )
 </template>
 
 <script setup lang="ts">
@@ -164,24 +152,6 @@ const groupedByRole = computed(() => {
     margin-bottom: $spacing-lg;
     border-bottom: 2px solid #eee;
     padding-bottom: $spacing-sm;
-  }
-
-  .interviews-grid {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: $spacing-lg;
-    margin-bottom: $spacing-xl;
-
-    a {
-      text-decoration: none;
-      color: inherit;
-      display: flex;
-    }
-
-    :deep(.interview-card) {
-      flex: 1;
-      min-height: 320px;
-    }
   }
 }
 </style>

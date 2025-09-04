@@ -49,7 +49,7 @@
             :description="work.description"
           )
 
-      RecommendedInterviewsSection(:interviews="recommendedInterviews")
+      InterviewsSection(:interviews="recommendedInterviews" title="Entrevistas recomendadas")
 
   div(v-else)
     .not-found-container
