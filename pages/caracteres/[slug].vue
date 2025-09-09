@@ -135,8 +135,8 @@ const recommendedInterviews = ref<Interview[]>([
 useHead({
   title: computed(() =>
     character.value
-      ? `Autofigurações - ${character.value.name}`
-      : "Autofigurações - Caracter"
+      ? `Orbis Tertius - ${character.value.name}`
+      : "Orbis Tertius - Caracter"
   ),
 });
 

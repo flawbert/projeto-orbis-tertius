@@ -2,7 +2,7 @@
 section.page
   main
     .main-title
-      h1.filled Autofigurações
+      h1.filled Orbis Tertius
 
     section.project-info
       h2 Sobre o projeto

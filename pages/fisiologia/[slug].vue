@@ -96,8 +96,8 @@ const relatedContent = ref<RelatedContent[]>([
 useHead({
   title: computed(() =>
     physiology.value
-      ? `Autofigurações - ${physiology.value.title}`
-      : "Autofigurações - Fisiologia"
+      ? `Orbis Tertius - ${physiology.value.title}`
+      : "Orbis Tertius - Fisiologia"
   ),
 });
 

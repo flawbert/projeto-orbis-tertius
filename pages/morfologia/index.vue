@@ -25,14 +25,16 @@ div
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue';
-import type { Morphology } from '~/types/index';
+import { ref } from "vue";
+import type { Morphology } from "~/types/index";
 
 useHead({
-  title: 'Autofigurações - Morfologia'
+  title: "Orbis Tertius - Morfologia",
 });
 
-const morphologyDescription = ref('It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout. The point of using Lorem Ipsum is that it has a more-or-less normal distribution of letters, as opposed to using Content here, content here, making it look like readable English. It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout.');
+const morphologyDescription = ref(
+  "It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout. The point of using Lorem Ipsum is that it has a more-or-less normal distribution of letters, as opposed to using Content here, content here, making it look like readable English. It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout."
+);
 
 const morphologyItems = ref<Morphology[]>([
   {
@@ -40,43 +42,43 @@ const morphologyItems = ref<Morphology[]>([
     title: "Morfologia da Montagem",
     influence: "Influência: Sergei Eisenstein",
     slug: "montagem",
-    image: "/images/morfologia_montagem.jpg"
+    image: "/images/morfologia_montagem.jpg",
   },
   {
     id: 2,
     title: "Morfologia do Plano-Sequência",
     influence: "Influência: André Bazin / Realismo",
     slug: "plano-sequencia",
-    image: "/images/morfologia_planosequencia.jpg"
+    image: "/images/morfologia_planosequencia.jpg",
   },
   {
     id: 3,
     title: "Morfologia do Cinema de Atrações",
     influence: "Influência: Tom Gunning / Cinema primitivo",
     slug: "cinema-de-atracoes",
-    image: "/images/morfologia_cinemaatracoes.jpg"
+    image: "/images/morfologia_cinemaatracoes.jpg",
   },
   {
     id: 4,
     title: "Morfologia do PLANO-SEQUÊNCIA",
     influence: "Influência: André Bazin / Realismo",
     slug: "plano-sequencia-2",
-    image: "/images/morfologia_planosequencia.jpg"
+    image: "/images/morfologia_planosequencia.jpg",
   },
   {
     id: 5,
     title: "Morfologia do CINEMA DE ATRAÇÕES",
     influence: "Influência: Tom Gunning / Cinema primitivo",
     slug: "cinema-de-atracoes-2",
-    image: "/images/morfologia_cinemaatracoes.jpg"
+    image: "/images/morfologia_cinemaatracoes.jpg",
   },
   {
     id: 6,
     title: "Morfologia da MONTAGEM",
     influence: "Influência: Sergei Eisenstein",
     slug: "montagem-2",
-    image: "/images/morfologia_montagem.jpg"
-  }
+    image: "/images/morfologia_montagem.jpg",
+  },
 ]);
 </script>
 
@@ -85,7 +87,7 @@ const morphologyItems = ref<Morphology[]>([
 
 .custom-header {
   padding: $spacing-xl 0;
-  background-color: #fff; 
+  background-color: #fff;
 
   .header-grid {
     display: grid;

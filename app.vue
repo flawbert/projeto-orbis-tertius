@@ -20,7 +20,7 @@ NuxtLayout
       .footer-content
         img(src="/images/LogoUFRNFooter.png")
         .footer-info
-          p © Autofigurações, {{year}} 
+          p © Orbis Tertius, {{year}} 
           p contato@autofigurações.com
           p Universidade Federal do Rio Grande do Norte
 </template>
@@ -29,7 +29,7 @@ NuxtLayout
 import type { NavbarItem } from "./types";
 
 useHead({
-  title: "Autofigurações",
+  title: "Orbis Tertius",
   meta: [
     {
       name: "description",
