@@ -145,7 +145,7 @@ const filteredGroupedByRole = computed(() => {
 
 <style lang="scss" scoped>
 @use "~/assets/css/variables" as *;
-
+@use "sass:color";
 .page-header {
   height: 30rem;
   background: url("/public/images/Banner.png") no-repeat center center;
@@ -165,21 +165,23 @@ const filteredGroupedByRole = computed(() => {
   padding-top: $spacing-xxl;
 
   .search {
-    flex: 3;
+    flex: 4.4;
     input {
       border-radius: 8px;
       height: 3.2rem;
       width: 100%;
-      padding: $spacing-sm 20px;
-      border: 1.5px solid $neutral-light;
-      background-color: lighten($neutral-lighter, 10%);
       font-size: 1rem;
+      padding: 0.5rem 2.5rem 0.5rem 1rem;
+      border: 2.35px solid $neutral-light;
+      border-radius: 4px;
+      background: color.adjust($color: $neutral-light, $lightness: 15%)
+        url("/images/icons/search.svg") no-repeat right 0.75rem center;
+      background-size: 1.5rem;
     }
   }
 
   .categories {
     flex: 1.2;
-    text-align: center;
   }
 
   .roles {
@@ -187,16 +189,21 @@ const filteredGroupedByRole = computed(() => {
   }
 
   select {
+    appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
     height: 3.2rem;
     width: 100%;
-    border: 1px solid $neutral-lighter;
-    border-radius: 8px;
-    background-color: $primary-cyan;
+    border-radius: 10px;
     color: white;
     font-weight: bold;
     font-size: 1rem;
-    padding: 0 $spacing-sm;
     cursor: pointer;
+    padding: 0.5rem 2.5rem 0.5rem 1rem;
+    border: 1px solid #ccc;
+    background: $primary-blue url("/images/icons/arrow-down.svg") no-repeat
+      right 0.75rem center;
+    background-size: 1rem;
   }
 }
 
