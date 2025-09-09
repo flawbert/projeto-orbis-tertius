@@ -53,7 +53,7 @@ const style = reactive({
   margin-left: -50vw;
   margin-right: -50vw;
   background-color: $primary-lightest-blue;
-  padding: $spacing-lg 0;
+  padding-bottom: $spacing-lg;
 
   .recommended-interviews {
     max-width: $container-width;
