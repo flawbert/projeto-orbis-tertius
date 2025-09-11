@@ -65,7 +65,7 @@
 </template>
 
 <script setup lang="ts">
-import Divider from "~/components/Divider.vue";
+// import Divider from "~/components/Divider.vue";
 import { useCharactersStore } from "~/store/characters";
 import type { Character, Interview, Work } from "~/types";
 

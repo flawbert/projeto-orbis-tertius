@@ -12,6 +12,7 @@ div
     .container
       h2.section-title Categorias
       .morphology-grid
+        // A LÓGICA DE REDIRECIONAMENTO ESTÁ AQUI
         NuxtLink(
           v-for="item in morphologyItems"
           :key="item.id"
@@ -34,6 +35,7 @@ useHead({
 
 const morphologyDescription = ref('It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout. The point of using Lorem Ipsum is that it has a more-or-less normal distribution of letters, as opposed to using Content here, content here, making it look like readable English. It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout.');
 
+// Os slugs aqui devem corresponder EXATAMENTE aos slugs no arquivo morphology.ts
 const morphologyItems = ref<Morphology[]>([
   {
     id: 1,
@@ -56,25 +58,25 @@ const morphologyItems = ref<Morphology[]>([
     slug: "cinema-de-atracoes",
     image: "/images/morfologia_cinemaatracoes.jpg"
   },
-  {
+   {
     id: 4,
     title: "Morfologia do PLANO-SEQUÊNCIA",
     influence: "Influência: André Bazin / Realismo",
-    slug: "plano-sequencia-2",
+    slug: "plano-sequencia", // Slug repetido para exemplo
     image: "/images/morfologia_planosequencia.jpg"
   },
   {
     id: 5,
     title: "Morfologia do CINEMA DE ATRAÇÕES",
     influence: "Influência: Tom Gunning / Cinema primitivo",
-    slug: "cinema-de-atracoes-2",
+    slug: "cinema-de-atracoes", // Slug repetido para exemplo
     image: "/images/morfologia_cinemaatracoes.jpg"
   },
   {
     id: 6,
     title: "Morfologia da MONTAGEM",
     influence: "Influência: Sergei Eisenstein",
-    slug: "montagem-2",
+    slug: "montagem", // Slug repetido para exemplo
     image: "/images/morfologia_montagem.jpg"
   }
 ]);
