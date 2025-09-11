@@ -3,7 +3,7 @@ div
   section.page-header
     .container
       h1.page-title Produções Próprias
-      p.page-description Conteúdo original produzido pela equipe Autofigurações
+      p.page-description Conteúdo original produzido pela equipe Orbis Tertius
 
   section.productions-showcase
     .container
@@ -90,7 +90,7 @@ div
 
 <script setup>
 useHead({
-  title: "Autofigurações - Produções Próprias",
+  title: "Orbis Tertius - Produções Próprias",
 });
 </script>
 

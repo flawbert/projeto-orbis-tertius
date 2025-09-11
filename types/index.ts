@@ -23,7 +23,7 @@ export interface Interview extends Identifiable {
   subtitle: string;
   date: string;
   slug?: string;
-  category: "director" | "screenwriter";
+  category: string;
   url: string;
 }
 
@@ -43,26 +43,29 @@ export interface Character extends Identifiable {
   fullDescription: string;
   pdfAvailable: boolean;
   profile: Blob;
+  image: string; // Temporário por agora
   slug: string;
-  roles: Role[];
+  roles: string[]; // Role[];
   works: Work[];
   categories: Category[];
 }
 
 export interface Work extends Identifiable {
   title: string;
-  details: string;
+  date: Date | string;
+  image: string;
   description?: string;
 }
 
 export interface Morphology extends Identifiable {
   title: string;
-  subtitle: string;
-  description: string;
+  subtitle?: string;
+  description?: string;
   influence: string;
-  influenceDescription: string;
-  examples: MorphologyExample[];
+  influenceDescription?: string;
+  examples?: MorphologyExample[];
   slug: string;
+  image: string;
 }
 
 export type MorphologyExample = Pick<

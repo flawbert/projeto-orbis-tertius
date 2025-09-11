@@ -2,51 +2,46 @@
 div
   .page-header
 
-  .container
-    .filters
-      .search
-        input(placeholder="ex: Walter Salles" v-model="searchQuery")
-      .categories
-        select(v-model="selectedCategory")
-          option(v-for="cat in categories" :key="cat" :value="cat") {{ cat }}
-      .roles
-        select(v-model="selectedRole")
-          option(v-for="role in roles" :key="role" :value="role") {{ role }}
+  section
+    .container
+      .filters
+        .search
+          input(placeholder="ex: Walter Salles" v-model="searchQuery")
+        .categories
+          select(v-model="selectedCategory")
+            option(v-for="cat in categories" :key="cat" :value="cat") {{ cat }}
+        .roles
+          select(v-model="selectedRole")
+            option(v-for="role in roles" :key="role" :value="role") {{ role }}
 
   section.content-grid
     .container
       .interviews-section(
-        v-for="(interviews, role) in groupedByRole"
+        v-for="(interviews, role) in filteredGroupedByRole"
         :key="role"
       )
-        h2.section-title {{ roleLabels[role] || role }}
-        .interviews-grid
-          NuxtLink(
-            v-for="(interview, index) in interviews"
-            :key="index"
-            :to="`/caracteres/${interview.slug}`"
-          )
-            InterviewCard(
-              :title="interview.title"
-              :subtitle="interview.subtitle"
-              :date="interview.date"
-              :image="interview.image"
-            )
+        InterviewsSection(:interviews="interviews" :title="roleLabels[role] || role" )
 </template>
 
 <script setup lang="ts">
 import { ref, computed } from "vue";
 
 useHead({
-  title: "Autofigurações - Caracteres",
+  title: "Orbis Tertius - Caracteres",
 });
 
 const searchQuery = ref("");
 const selectedCategory = ref("Categorias");
 const selectedRole = ref("Tipos");
 
-const categories = ref(["Categorias", "Cinema Brasileiro", "Cinema Asiático"]);
-const roles = ref(["Tipos", "Diretor", "Roteirista", "Ator", "Artista Visual"]);
+const categories = ref(["Categorias", "Cinema Brasileiro", "Cinema Japonês"]);
+const roles = ref([
+  "Tipos",
+  "Diretores",
+  "Roteiristas",
+  "Atores",
+  "Artistas Visuais",
+]);
 
 const roleLabels: Record<string, string> = {
   director: "Diretores",
@@ -55,12 +50,16 @@ const roleLabels: Record<string, string> = {
   "visual-artist": "Artistas Visuais",
 };
 
+const roleKeys: Record<string, string> = Object.fromEntries(
+  Object.entries(roleLabels).map(([key, value]) => [value, key])
+);
+
 const persons = ref([
   {
     title: "Entrevista: Hirokazu Koreeda",
     subtitle: 'Diretor de "Monster"',
     date: "Março 25, 2025",
-    image: "/assets/images/koreeda.jpg",
+    image: "/images/koreeda.png",
     roles: ["director", "writer"],
     slug: "koreeda",
   },
@@ -68,7 +67,7 @@ const persons = ref([
     title: "Entrevista: Nelson Pereira dos Santos",
     subtitle: 'Diretor de "Vidas Secas"',
     date: "Junho 25, 2010",
-    image: "/assets/images/nelson.jpg",
+    image: "/images/nelson.png",
     roles: ["director", "actor"],
     slug: "nelson-pereira",
   },
@@ -76,7 +75,7 @@ const persons = ref([
     title: "Entrevista: Kleber Mendonça Filho",
     subtitle: 'Diretor de "Bacurau"',
     date: "Dezembro 25, 2025",
-    image: "/assets/images/kleber.jpg",
+    image: "/images/kleber.png",
     roles: ["director", "writer", "visual-artist"],
     slug: "kleber",
   },
@@ -84,7 +83,7 @@ const persons = ref([
     title: "Entrevista: Celine Song",
     subtitle: 'Roteirista de "Vidas Passadas"',
     date: "Dezembro 24, 2024",
-    image: "/assets/images/celine.jpg",
+    image: "/images/celine-song.png",
     roles: ["writer", "actor"],
     slug: "celine-song",
   },
@@ -92,7 +91,7 @@ const persons = ref([
     title: "Entrevista: Guilhermo del Toro",
     subtitle: 'Roteirista de "Pinóquio"',
     date: "Fevereiro 12, 2023",
-    image: "/assets/images/deltoro.jpg",
+    image: "/images/deltoro.png",
     roles: ["writer"],
     slug: "guilhermo-del-toro",
   },
@@ -100,18 +99,44 @@ const persons = ref([
     title: "Entrevista: Alfonso Cuarón",
     subtitle: 'Roteirista de "Roma"',
     date: "Fevereiro 15, 2025",
-    image: "/assets/images/cuaron.jpg",
+    image: "/images/cuaron.png",
     roles: ["writer", "actor"],
     slug: "alfonso-cuaron",
   },
 ]);
 
-const groupedByRole = computed(() => {
+const filteredPersons = computed(() => {
+  return persons.value.filter((p) => {
+    const matchesSearch =
+      searchQuery.value === "" ||
+      p.title.toLowerCase().includes(searchQuery.value.toLowerCase()) ||
+      p.subtitle.toLowerCase().includes(searchQuery.value.toLowerCase());
+
+    const matchesCategory =
+      selectedCategory.value === "Categorias" ||
+      p.category === selectedCategory.value; // TODO: add category tag
+
+    const matchesRole =
+      selectedRole.value === "Tipos" ||
+      p.roles.includes(roleKeys[selectedRole.value]);
+
+    console.log(matchesRole);
+
+    return matchesSearch && matchesCategory && matchesRole;
+  });
+});
+
+const filteredGroupedByRole = computed(() => {
   const groups: Record<string, typeof persons.value> = {};
-  for (const person of persons.value) {
+  for (const person of filteredPersons.value) {
     for (const role of person.roles) {
-      if (!groups[role]) groups[role] = [];
-      groups[role].push(person);
+      if (
+        selectedRole.value === "Tipos" ||
+        role === roleKeys[selectedRole.value]
+      ) {
+        if (!groups[role]) groups[role] = [];
+        groups[role].push(person);
+      }
     }
   }
   return groups;
@@ -120,63 +145,76 @@ const groupedByRole = computed(() => {
 
 <style lang="scss" scoped>
 @use "~/assets/css/variables" as *;
-
+@use "sass:color";
 .page-header {
-  height: 300px;
-  background: #ccc;
+  height: 30rem;
+  background: url("/public/images/Banner.png") no-repeat center center;
+  background-size: cover;
   margin-bottom: $spacing-lg;
+}
+
+.content-grid {
+  padding-bottom: $spacing-xl;
 }
 
 .filters {
   display: flex;
-  flex-direction: row;
-  margin: $spacing-lg 0;
+  align-items: center;
   gap: $spacing-md;
+  margin: $spacing-lg 0;
+  padding-top: $spacing-xxl;
 
   .search {
+    flex: 4.4;
+    input {
+      border-radius: 8px;
+      height: 3.2rem;
+      width: 100%;
+      font-size: 1rem;
+      padding: 0.5rem 2.5rem 0.5rem 1rem;
+      border: 2.35px solid $neutral-light;
+      border-radius: 4px;
+      background: color.adjust($color: $neutral-light, $lightness: 15%)
+        url("/images/icons/search.svg") no-repeat right 0.75rem center;
+      background-size: 1.5rem;
+    }
+  }
+
+  .categories {
+    flex: 1.2;
+  }
+
+  .roles {
     flex: 1;
   }
 
-  input {
-    width: 100%;
-    padding: $spacing-sm;
-    border: 1px solid $neutral-lighter;
-    border-radius: 4px;
-  }
-
   select {
-    padding: $spacing-sm;
-    border: 1px solid $neutral-lighter;
-    border-radius: 4px;
+    appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    height: 3.2rem;
+    width: 100%;
+    border-radius: 10px;
+    color: white;
+    font-weight: bold;
+    font-size: 1rem;
+    cursor: pointer;
+    padding: 0.5rem 2.5rem 0.5rem 1rem;
+    border: 1px solid #ccc;
+    background: $primary-blue url("/images/icons/arrow-down.svg") no-repeat
+      right 0.75rem center;
+    background-size: 1rem;
   }
 }
 
-.content-grid {
-  padding: $spacing-xl 0;
-
-  .section-title {
-    font-size: 1.8rem;
-    margin-bottom: $spacing-lg;
-    color: $primary-color;
-    border-bottom: 2px solid #eee;
-    padding-bottom: $spacing-sm;
-  }
-
-  .interviews-grid {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: $spacing-lg;
-    margin-bottom: $spacing-xl;
-
-    a {
-      text-decoration: none;
-      color: inherit;
-      display: flex;
-    }
-
-    :deep(.interview-card) {
+@media (max-width: $mobile) {
+  .filters {
+    flex-direction: column;
+    align-items: stretch;
+    .search,
+    .categories,
+    .roles {
       flex: 1;
-      min-height: 320px;
     }
   }
 }

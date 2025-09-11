@@ -27,7 +27,7 @@ await store.fetchTeamMembers();
 const members = ref(store.getAllMembers);
 
 useHead({
-  title: "Autofigurações - Quem Somos",
+  title: "Orbis Tertius - Quem Somos",
 });
 </script>
 

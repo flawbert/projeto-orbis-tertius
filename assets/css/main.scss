@@ -65,7 +65,7 @@ a {
 }
 
 .container {
-  max-width: 1200px;
+  max-width: $container-width;
   margin: 0 auto;
   padding: 0 $spacing-lg;
 
