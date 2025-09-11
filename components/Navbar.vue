@@ -2,7 +2,9 @@
 header.header
   .nav-brand
     NuxtLink(to="/") 
-      img(src="/images/LogoUFRN.png")
+      img(src="/images/LogoUFRN.jpeg")
+    .divider
+    span ORBIS TERTIUS
   nav
     .nav-links
       NuxtLink(
@@ -33,7 +35,11 @@ const navbarItems = ref<NavbarItem[]>([
 
   .nav-brand {
     border-bottom: 5px solid $primary-cyan;
-    padding-left: $spacing-xxl;
+    display: flex;
+    align-items: center;
+    padding: $spacing-lg;
+    padding-left: $spacing-xxl * 1.5;
+
     a {
       font-size: $font-size-h4;
       font-weight: bold;
@@ -42,13 +48,28 @@ const navbarItems = ref<NavbarItem[]>([
       transition: color 0.3s ease;
 
       img {
+        height: 2.2rem;
+        width: auto;
         display: flex;
-        justify-self: center;
       }
 
       &:hover {
         color: $secondary-color;
       }
+    }
+
+    .divider {
+      width: 0.14rem;
+      height: 3rem;
+      background-color: $primary-cyan;
+      margin: 0 15px;
+      transform: rotate(8deg);
+      transform-origin: center;
+    }
+
+    span {
+      color: $primary-blue;
+      font-weight: bold;
     }
   }
 
@@ -63,6 +84,7 @@ const navbarItems = ref<NavbarItem[]>([
       display: flex;
       justify-content: start;
       gap: $spacing-lg;
+      padding-left: $spacing-xl;
 
       a {
         color: white;
