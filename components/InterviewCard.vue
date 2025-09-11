@@ -47,7 +47,6 @@ defineProps({
   .card-photo {
     width: 100%;
     height: 10rem;
-    margin-bottom: $spacing-md;
     overflow: hidden;
     border-radius: 6px;
 
@@ -59,21 +58,19 @@ defineProps({
     }
   }
   .card-info {
-    padding: $spacing-lg;
+    padding: $spacing-md;
     h4 {
       font-size: 1.2rem;
       margin-bottom: $spacing-sm;
-      color: $primary-color;
     }
 
     .subtitle {
-      color: $accent-color;
       margin-bottom: $spacing-xs;
     }
 
     .date {
-      font-size: 0.9rem;
-      color: #999;
+      font-size: $font-size-small;
+      color: $text-light;
     }
   }
 }

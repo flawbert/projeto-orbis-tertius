@@ -87,11 +87,13 @@ div
 </template>
 
 <script setup>
-const physiologyDescription = ref('It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout. The point of using Lorem Ipsum is that it has a more-or-less normal distribution of letters, as opposed to using \'Content here, content here\', making it look like readable English. It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout.')
+const physiologyDescription = ref(
+  "It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout. The point of using Lorem Ipsum is that it has a more-or-less normal distribution of letters, as opposed to using 'Content here, content here', making it look like readable English. It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout."
+);
 
 useHead({
-  title: 'Autofigurações - Fisiologia'
-})
+  title: "Orbis Tertius - Fisiologia",
+});
 </script>
 
 <style lang="scss" scoped>
@@ -174,9 +176,9 @@ useHead({
     grid-template-columns: 1fr;
   }
 
-  .works-grid, .interviews-grid {
+  .works-grid,
+  .interviews-grid {
     grid-template-columns: 1fr;
   }
 }
 </style>
-

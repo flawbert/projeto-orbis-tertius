@@ -63,9 +63,7 @@ const slug = route.params.slug as string;
 
 await morphologyStore.fetchMorphologyBySlug(slug);
 
-const morphology = computed(
-  () => morphologyStore.currentMorphology
-);
+const morphology = computed(() => morphologyStore.currentMorphology);
 
 const relatedContent = ref<RelatedContent[]>([
   {
@@ -97,8 +95,8 @@ const relatedContent = ref<RelatedContent[]>([
 useHead({
   title: computed(() =>
     morphology.value
-      ? `Autofigurações - ${morphology.value.title}`
-      : "Autofigurações - Morfologia"
+      ? `Orbis Tertius - ${morphology.value.title}`
+      : "Orbis Tertius - Morfologia"
   ),
 });
 
@@ -129,7 +127,7 @@ onUnmounted(() => {
   padding-bottom: $spacing-sm;
   margin-bottom: $spacing-lg;
   &::after {
-    content: '';
+    content: "";
     position: absolute;
     bottom: 0;
     left: 0;
@@ -202,7 +200,7 @@ section {
 }
 
 .related-content-section {
-  background-color: #DAE6F2;
+  background-color: #dae6f2;
   padding: $spacing-xl 0;
 
   .container {
