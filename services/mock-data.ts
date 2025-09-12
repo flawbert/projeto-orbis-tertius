@@ -140,15 +140,6 @@ export class Mock {
         description:
           "Investigação do horror visceral e suas manifestações físicas.",
       },
-      {
-        id: 4,
-        title: "A FISIOLOGIA DO MEDO",
-        influence: "Influência: Alfred Hitchcock / Psicologia do Medo",
-        slug: "medo",
-        image: "/images/fisiologia_medo.png",
-        description:
-          "It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout.",
-      },
     ];
   }
 }

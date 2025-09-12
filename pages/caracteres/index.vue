@@ -34,7 +34,11 @@ const searchQuery = ref("");
 const selectedCategory = ref("Categorias");
 const selectedRole = ref("Tipos");
 
-const categories = ref(["Categorias", "Cinema Brasileiro", "Cinema Japonês"]);
+const categories = ref([
+  "Categorias",
+  "Fisiologia do Medo",
+  "Morfologia do Plano Sequência",
+]);
 const roles = ref([
   "Tipos",
   "Diretores",

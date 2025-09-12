@@ -2,6 +2,7 @@
 section.categories-section
   .container
     h2.section-title Categorias
+    Divider
     .category-grid
       NuxtLink(
         v-for="item in props.items"
@@ -34,10 +35,8 @@ const categoryTranslation = useTranslation(props.type);
 
   .section-title {
     font-size: 2rem;
-    margin-bottom: $spacing-md;
     color: $text-color;
     text-align: left;
-    border-bottom: 3px solid $primary-color;
     padding-bottom: $spacing-sm;
     display: inline-block;
   }
@@ -46,7 +45,6 @@ const categoryTranslation = useTranslation(props.type);
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
     gap: $spacing-lg;
-    margin-top: $spacing-lg;
 
     a {
       text-decoration: none;

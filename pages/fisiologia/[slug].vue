@@ -1,54 +1,54 @@
 <template lang="pug">
 div
-  div(v-if="physiologyStore.isLoading")
-    .loading-container
-      p Carregando...
+  //- div(v-if="physiologyStore.isLoading")
+  //-   .loading-container
+  //-     p Carregando...
 
-  div(v-else-if="physiologyStore.error")
-    .error-container
-      p Erro: {{ physiologyStore.error }}
+  //- div(v-else-if="physiologyStore.error")
+  //-   .error-container
+  //-     p Erro: {{ physiologyStore.error }}
 
-  div(v-else-if="physiology")
-    .main-image-container(v-if="physiology.mainImage")
-        img(:src="physiology.mainImage" alt="Imagem principal da fisiologia")
+  //- div(v-else-if="physiology")
+  //-   .main-image-container(v-if="physiology.mainImage")
+  //-       img(:src="physiology.mainImage" alt="Imagem principal da fisiologia")
 
-    .container
-      PageHeader(
-        :title="physiology.title"
-        :description="physiology.subtitle"
-        :description-text="physiology.description"
-      )
+  //-   .container
+  //-     PageHeader(
+  //-       :title="physiology.title"
+  //-       :description="physiology.subtitle"
+  //-       :description-text="physiology.description"
+  //-     )
 
-    section.physiology-details.white-background
-      .container
-        .examples-section(v-if="physiology.examples && physiology.examples.length > 0")
-          h3.section-title.with-line Exemplos e Análises
-          .examples-grid
-            .example-card(v-for="example in physiology.examples" :key="example.id")
-              img.example-image(v-if="example.image" :src="example.image" :alt="`Imagem para ${example.title}`")
-              .card-content
-                h4 {{ example.title }}
-                p.example-description {{ example.description }}
-                .example-details {{ example.details }}
+  //-   section.physiology-details.white-background
+  //-     .container
+  //-       .examples-section(v-if="physiology.examples && physiology.examples.length > 0")
+  //-         h3.section-title.with-line Exemplos e Análises
+  //-         .examples-grid
+  //-           .example-card(v-for="example in physiology.examples" :key="example.id")
+  //-             img.example-image(v-if="example.image" :src="example.image" :alt="`Imagem para ${example.title}`")
+  //-             .card-content
+  //-               h4 {{ example.title }}
+  //-               p.example-description {{ example.description }}
+  //-               .example-details {{ example.details }}
 
-    section.related-content-section
-      .container
-        .related-content
-          h3.section-title.with-line Conteúdo Relacionado
-          .content-grid
-            NuxtLink.content-card(
-              v-for="content in relatedContent"
-              :key="content.id"
-              :to="content.path"
-            )
-              img.content-image(v-if="content.image" :src="content.image" :alt="content.title")
-              .content-text
-                h4 {{ content.title }}
-                p {{ content.description }}
+  //-   section.related-content-section
+  //-     .container
+  //-       .related-content
+  //-         h3.section-title.with-line Conteúdo Relacionado
+  //-         .content-grid
+  //-           NuxtLink.content-card(
+  //-             v-for="content in relatedContent"
+  //-             :key="content.id"
+  //-             :to="content.path"
+  //-           )
+  //-             img.content-image(v-if="content.image" :src="content.image" :alt="content.title")
+  //-             .content-text
+  //-               h4 {{ content.title }}
+  //-               p {{ content.description }}
 
-  div(v-else)
-    .not-found-container
-      p Morfologia não encontrada
+  //- div(v-else)
+  .not-found-container
+    p Fisiologia não encontrada
 </template>
 
 <script setup lang="ts">
@@ -106,6 +106,24 @@ onUnmounted(() => {
 
 <style lang="scss" scoped>
 @use "~/assets/css/variables" as *;
+
+.loading-container,
+.error-container,
+.not-found-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 50vh;
+
+  p {
+    font-size: 1.2rem;
+    color: $text-color;
+  }
+}
+
+.error-container p {
+  color: #d32f2f;
+}
 
 .main-image-container {
   width: 100%;

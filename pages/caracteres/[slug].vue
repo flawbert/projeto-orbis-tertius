@@ -17,14 +17,13 @@
         p {{character.description}}
         // Adicionar categorias/tipos
 
+    Divider(color="blue")
 
     section.character-details
       .character-info
         .info
-          h2.section-title Entrevista:  
+          h2.section-title Entrevista: {{ character.name }}, {{character.description}} 
           p.character-description {{ character.fullDescription }}
-          .download-section(v-if="character.pdfAvailable")
-            button.download-btn Baixar PDF
         .video 
           iframe(
             width="560"
@@ -35,6 +34,9 @@
             allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
             allowfullscreen
             )
+
+      .download-section(v-if="character.pdfAvailable")
+        button.download-btn Baixar PDF
 
       .works-section(v-if="character.works && character.works.length > 0")
         h3.works-title Obras
@@ -203,10 +205,12 @@ onUnmounted(() => {
   display: flex;
   flex-direction: row;
   align-items: center;
+  margin-bottom: 3rem;
 
   .character-photo {
     flex: 1;
     margin-right: 2rem;
+    padding-top: 2rem;
 
     img {
       width: 100%;
@@ -255,27 +259,27 @@ onUnmounted(() => {
     }
     .video {
     }
+  }
+  .download-section {
+    margin-bottom: $spacing-xl;
 
-    .download-section {
-      margin-bottom: $spacing-xl;
+    .download-btn {
+      background-color: $primary-color;
+      color: white;
+      padding: $spacing-sm $spacing-lg;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
 
-      .download-btn {
-        background-color: $primary-color;
-        color: white;
-        padding: $spacing-sm $spacing-lg;
-        border: none;
-        border-radius: 8px;
-        cursor: pointer;
-        transition: background-color 0.3s ease;
-
-        &:hover {
-          background-color: darken($primary-color, 10%);
-        }
+      &:hover {
+        background-color: darken($primary-color, 10%);
       }
     }
   }
 
   .works-section {
+    margin-top: $spacing-xl;
     margin-bottom: $spacing-xl;
 
     .works-title {
