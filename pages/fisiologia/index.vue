@@ -15,7 +15,8 @@ div
 <script setup lang="ts">
 import { ref } from "vue";
 import CategoriesSection from "~/components/categories/CategoriesSection.vue";
-import type { Morphology } from "~/types/index";
+import { Mock } from "~/services/mock-data";
+import { usePhysiologyStore } from "~/store/physiology";
 
 useHead({
   title: "Orbis Tertius - Fisiologia",
@@ -25,29 +26,15 @@ const physiologyDescription = ref(
   "It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout. The point of using Lorem Ipsum is that it has a more-or-less normal distribution of letters, as opposed to using Content here, content here, making it look like readable English. It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout."
 );
 
-const physiologyItems = ref<Morphology[]>([
-  {
-    id: 1,
-    title: "FISIOLOGIA DO SUSPENSE",
-    influence: "Influência: Alfred Hitchcock / Psicologia do Medo",
-    slug: "suspense",
-    image: "/images/fisiologia_suspense.png",
-  },
-  {
-    id: 2,
-    title: "FISIOLOGIA DO ÊXTASE",
-    influence: "Influência: Gaspar Noé / Cinema Sensorial",
-    slug: "extase",
-    image: "/images/fisiologia_extase.png",
-  },
-  {
-    id: 3,
-    title: "FISIOLOGIA DO TERROR CORPORAL",
-    influence: "Influência: David Cronenberg / Body Horror",
-    slug: "terror-corporal",
-    image: "/images/fisiologia_terror_corporal.png",
-  },
-]);
+const physiologyStore = usePhysiologyStore();
+if (physiologyStore.physiologies.length == 0) {
+  await physiologyStore.fetchPhysiologies();
+}
+
+const physiologyItems = computed(() => {
+  // physiologyStore.getAllPhysiologies; FIXME: trocar pra usar store
+  return Mock.physiologies();
+});
 </script>
 
 <style lang="scss" scoped>
@@ -98,7 +85,7 @@ const physiologyItems = ref<Morphology[]>([
 }
 
 @media (max-width: $mobile) {
-  .categories-section .morphology-grid {
+  .categories-section .physiology-grid {
     grid-template-columns: 1fr;
   }
 

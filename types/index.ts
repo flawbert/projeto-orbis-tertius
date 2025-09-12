@@ -93,21 +93,13 @@ export interface RelatedContent extends Identifiable {
 
 export interface Physiology extends Identifiable {
   title: string;
-  subtitle: string;
-  description: string;
+  subtitle?: string;
+  description?: string;
+  image?: string;
   influence: string;
-  influenceDescription: string;
-  caseStudyTitle: string;
-  caseStudyDescription: string;
-  works: Work[];
-  mechanisms: PhysiologyMechanism[];
+  works?: Work[];
   slug: string;
 }
-
-export type PhysiologyMechanism = Pick<
-  Physiology,
-  "id" | "title" | "description"
->;
 
 export interface TeamMember extends Identifiable {
   name: string;

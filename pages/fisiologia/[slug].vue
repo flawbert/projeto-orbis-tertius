@@ -9,87 +9,85 @@ div
       p Erro: {{ physiologyStore.error }}
 
   div(v-else-if="physiology")
-    PageHeader(
-      :title="physiology.title"
-      :description="physiology.subtitle"
-      :description-text="physiology.description"
-    )
+    .main-image-container(v-if="physiology.mainImage")
+        img(:src="physiology.mainImage" alt="Imagem principal da fisiologia")
 
-    section.physiology-details
+    .container
+      PageHeader(
+        :title="physiology.title"
+        :description="physiology.subtitle"
+        :description-text="physiology.description"
+      )
+
+    section.physiology-details.white-background
       .container
-        .physiology-info
-          .influence-section
-            h3 Influência: {{ physiology.influence }}
-            p.influence-description {{ physiology.influenceDescription }}
+        .examples-section(v-if="physiology.examples && physiology.examples.length > 0")
+          h3.section-title.with-line Exemplos e Análises
+          .examples-grid
+            .example-card(v-for="example in physiology.examples" :key="example.id")
+              img.example-image(v-if="example.image" :src="example.image" :alt="`Imagem para ${example.title}`")
+              .card-content
+                h4 {{ example.title }}
+                p.example-description {{ example.description }}
+                .example-details {{ example.details }}
 
-        .case-study-section
-          h3.section-title {{ physiology.caseStudyTitle }}
-          p.case-study-description {{ physiology.caseStudyDescription }}
-
-        .mechanisms-section(v-if="physiology.mechanisms && physiology.mechanisms.length > 0")
-          h3.section-title Mecanismos Fisiológicos
-          .mechanisms-grid
-            .mechanism-card(v-for="mechanism in physiology.mechanisms" :key="mechanism.id")
-              h4 {{ mechanism.title }}
-              p {{ mechanism.description }}
-
-        .works-section(v-if="physiology.works && physiology.works.length > 0")
-          h3.section-title Obras Analisadas
-          .works-grid
-            WorkCard(
-              v-for="work in physiology.works"
-              :key="work.id"
-              :title="work.title"
-              :details="work.details"
-              :description="work.description"
-            )
-
+    section.related-content-section
+      .container
         .related-content
-          h3.section-title Conteúdo Relacionado
+          h3.section-title.with-line Conteúdo Relacionado
           .content-grid
-            .content-item(v-for="content in relatedContent" :key="content.id")
-              h4 {{ content.title }}
-              p {{ content.description }}
+            NuxtLink.content-card(
+              v-for="content in relatedContent"
+              :key="content.id"
+              :to="content.path"
+            )
+              img.content-image(v-if="content.image" :src="content.image" :alt="content.title")
+              .content-text
+                h4 {{ content.title }}
+                p {{ content.description }}
 
   div(v-else)
     .not-found-container
-      p Fisiologia não encontrada
+      p Morfologia não encontrada
 </template>
 
 <script setup lang="ts">
 import { usePhysiologyStore } from "~/store/physiology";
-import type { Physiology, RelatedContent } from "~/types";
+import type { RelatedContent } from "~/types";
 
 const route = useRoute();
 const physiologyStore = usePhysiologyStore();
 
 const slug = route.params.slug as string;
 
-// Buscar fisiologia pelo slug
 await physiologyStore.fetchPhysiologyBySlug(slug);
 
-const physiology = computed(
-  (): Physiology | null => physiologyStore.currentPhysiology
-);
+const physiology = computed(() => physiologyStore.currentPhysiology);
 
 const relatedContent = ref<RelatedContent[]>([
   {
     id: "1",
     title: "Artigos Acadêmicos",
-    description: "Textos teóricos sobre fisiologia cinematográfica",
+    description: "Textos teóricos sobre montagem cinematográfica",
     type: "article",
+    image: "/images/artigos-academicos.jpeg",
+    path: "/artigos",
   },
   {
     id: "2",
     title: "Entrevistas",
-    description: "Conversas com cineastas sobre técnicas narrativas",
+    description: "Conversas com editores e diretores",
     type: "interview",
+    image: "/images/entrevistas.jpeg",
+    path: "/entrevistas",
   },
   {
     id: "3",
     title: "Análises Fílmicas",
-    description: "Estudos de caso de filmes representativos",
+    description: "Estudos de caso de filmes clássicos",
     type: "analysis",
+    image: "/images/analises-filmicas.jpeg",
+    path: "/analises",
   },
 ]);
 
@@ -101,7 +99,6 @@ useHead({
   ),
 });
 
-// Limpar erro ao sair da página
 onUnmounted(() => {
   physiologyStore.clearError();
 });
@@ -110,155 +107,166 @@ onUnmounted(() => {
 <style lang="scss" scoped>
 @use "~/assets/css/variables" as *;
 
-.loading-container,
-.error-container,
-.not-found-container {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  min-height: 50vh;
+.main-image-container {
+  width: 100%;
+  max-height: 500px;
+  overflow: hidden;
+  margin-top: 0;
+  margin-bottom: $spacing-xl;
 
-  p {
-    font-size: 1.2rem;
-    color: $text-color;
+  img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
   }
 }
 
-.error-container p {
-  color: #d32f2f;
+.section-title.with-line {
+  position: relative;
+  padding-bottom: $spacing-sm;
+  margin-bottom: $spacing-lg;
+  &::after {
+    content: "";
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 70px;
+    height: 4px;
+    background-color: $primary-color;
+  }
+}
+
+.white-background {
+  background-color: #ffffff;
+}
+
+section {
+  padding: $spacing-xl 0;
 }
 
 .physiology-details {
+  padding-top: 0;
+}
+
+.examples-section {
+  margin-bottom: $spacing-xl;
+}
+
+.examples-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: $spacing-lg;
+}
+
+.example-card {
+  background: white;
+  border-radius: 8px;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
+  transition: transform 0.3s ease;
+  overflow: hidden;
+
+  &:hover {
+    transform: translateY(-5px);
+  }
+
+  .example-image {
+    width: 100%;
+    aspect-ratio: 16 / 9;
+    object-fit: cover;
+  }
+
+  .card-content {
+    padding: $spacing-lg;
+  }
+
+  h4 {
+    font-size: 1.2rem;
+    margin-bottom: $spacing-sm;
+    color: $primary-color;
+  }
+
+  .example-description {
+    line-height: 1.5;
+    margin-bottom: $spacing-sm;
+    color: $text-color;
+  }
+
+  .example-details {
+    font-size: 0.9rem;
+    color: $accent-color;
+    font-style: italic;
+  }
+}
+
+.related-content-section {
+  background-color: #dae6f2;
   padding: $spacing-xl 0;
 
-  .physiology-info {
-    margin-bottom: $spacing-xl;
+  .container {
+    max-width: 1200px;
+    margin: 0 auto;
+  }
 
-    .influence-section {
-      background: #f9f9f9;
-      padding: $spacing-lg;
-      border-radius: 8px;
-      border-left: 4px solid $primary-color;
+  .related-content .section-title {
+    font-size: 1.8rem;
+    color: $primary-color;
+    text-align: center;
+    position: relative;
 
-      h3 {
-        font-size: 1.3rem;
-        margin-bottom: $spacing-md;
-        color: $primary-color;
-      }
-
-      .influence-description {
-        line-height: 1.6;
-        color: $text-color;
-      }
+    &::after {
+      left: 50%;
+      transform: translateX(-50%);
     }
   }
 
-  .case-study-section {
-    margin-bottom: $spacing-xl;
+  .content-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: $spacing-lg;
+    margin-top: $spacing-lg;
+  }
 
-    .section-title {
-      font-size: 1.8rem;
-      margin-bottom: $spacing-lg;
-      color: $primary-color;
-    }
+  .content-card {
+    background: #ffffff;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+    overflow: hidden;
+    text-decoration: none;
+    display: flex;
+    flex-direction: column;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
 
-    .case-study-description {
-      line-height: 1.8;
-      color: $text-color;
+    &:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.12);
     }
   }
 
-  .mechanisms-section {
-    margin-bottom: $spacing-xl;
-
-    .section-title {
-      font-size: 1.8rem;
-      margin-bottom: $spacing-lg;
-      color: $primary-color;
-    }
-
-    .mechanisms-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-      gap: $spacing-lg;
-    }
-
-    .mechanism-card {
-      background: white;
-      padding: $spacing-lg;
-      border-radius: 8px;
-      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
-      transition: transform 0.3s ease;
-
-      &:hover {
-        transform: translateY(-3px);
-      }
-
-      h4 {
-        font-size: 1.2rem;
-        margin-bottom: $spacing-sm;
-        color: $primary-color;
-      }
-
-      p {
-        line-height: 1.5;
-        color: $text-color;
-      }
-    }
+  .content-image {
+    width: 100%;
+    height: 180px;
+    object-fit: cover;
   }
 
-  .works-section {
-    margin-bottom: $spacing-xl;
-
-    .section-title {
-      font-size: 1.8rem;
-      margin-bottom: $spacing-lg;
-      color: $primary-color;
-    }
-
-    .works-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-      gap: $spacing-lg;
-    }
+  .content-text {
+    padding: $spacing-lg;
+    text-align: left;
   }
 
-  .related-content {
-    .section-title {
-      font-size: 1.8rem;
-      margin-bottom: $spacing-lg;
-      color: $primary-color;
-    }
+  .content-text h4 {
+    font-size: 1.2rem;
+    margin-bottom: $spacing-sm;
+    color: $primary-color;
+  }
 
-    .content-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-      gap: $spacing-lg;
-    }
-
-    .content-item {
-      background: #f9f9f9;
-      padding: $spacing-lg;
-      border-radius: 8px;
-      text-align: center;
-
-      h4 {
-        font-size: 1.2rem;
-        margin-bottom: $spacing-sm;
-        color: $primary-color;
-      }
-
-      p {
-        color: $text-color;
-        line-height: 1.5;
-      }
-    }
+  .content-text p {
+    color: $text-color;
+    line-height: 1.5;
   }
 }
 
 @media (max-width: $mobile) {
-  .mechanisms-grid,
-  .works-grid,
+  .examples-grid,
   .content-grid {
     grid-template-columns: 1fr;
   }

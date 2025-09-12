@@ -8,7 +8,7 @@ div
         h1.header-title O que é Morfologia no cinema?
         p.header-description {{ morphologyDescription }}
 
-  CategoriesSection(type="morphology" :items="morphologyItems")
+  CategoriesSection(type="morphology" :items="morphologySummaries")
 </template>
 
 <script setup lang="ts">
