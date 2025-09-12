@@ -8,21 +8,7 @@ div
         h1.header-title O que é Morfologia no cinema?
         p.header-description {{ morphologyDescription }}
 
-  section.categories-section
-    .container
-      h2.section-title Categorias
-      .morphology-grid
-        // A LÓGICA DE REDIRECIONAMENTO ESTÁ AQUI
-        NuxtLink(
-          v-for="item in morphologyItems"
-          :key="item.id"
-          :to="`/morfologia/${item.slug}`"
-        )
-          MorphologyCard(
-            :title="item.title"
-            :influence="item.influence"
-            :image="item.image"
-          )
+  CategoriesSection(type="morphology" :items="morphologyItems")
 </template>
 
 <script setup lang="ts">
@@ -60,27 +46,27 @@ const morphologyItems = ref<Morphology[]>([
     slug: "cinema-de-atracoes",
     image: "/images/morfologia_cinemaatracoes.jpg",
   },
-   {
+  {
     id: 4,
     title: "Morfologia do PLANO-SEQUÊNCIA",
     influence: "Influência: André Bazin / Realismo",
     slug: "plano-sequencia", // Slug repetido para exemplo
-    image: "/images/morfologia_planosequencia.jpg"
+    image: "/images/morfologia_planosequencia.jpg",
   },
   {
     id: 5,
     title: "Morfologia do CINEMA DE ATRAÇÕES",
     influence: "Influência: Tom Gunning / Cinema primitivo",
     slug: "cinema-de-atracoes", // Slug repetido para exemplo
-    image: "/images/morfologia_cinemaatracoes.jpg"
+    image: "/images/morfologia_cinemaatracoes.jpg",
   },
   {
     id: 6,
     title: "Morfologia da MONTAGEM",
     influence: "Influência: Sergei Eisenstein",
     slug: "montagem", // Slug repetido para exemplo
-    image: "/images/morfologia_montagem.jpg"
-  }
+    image: "/images/morfologia_montagem.jpg",
+  },
 ]);
 </script>
 
