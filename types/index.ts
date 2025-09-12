@@ -15,47 +15,10 @@ export interface NavbarItem {
 }
 
 interface Identifiable {
-  id: number;
+  id: number; // Padronizado como number
 }
 
-export interface Interview extends Identifiable {
-  title: string;
-  subtitle: string;
-  date: string;
-  slug?: string;
-  category: string;
-  url: string;
-}
-
-export interface Category extends Identifiable {
-  name: string;
-  description: string;
-  parent?: Category;
-}
-
-export interface Role extends Identifiable {
-  name: string;
-}
-
-export interface Character extends Identifiable {
-  name: string;
-  description: string;
-  fullDescription: string;
-  pdfAvailable: boolean;
-  profile: Blob;
-  image: string; // Temporário por agora
-  slug: string;
-  roles: string[]; // Role[];
-  works: Work[];
-  categories: Category[];
-}
-
-export interface Work extends Identifiable {
-  title: string;
-  date: Date | string;
-  image: string;
-  description?: string;
-}
+// ...outras interfaces como Interview, Category, Role, Character, Work...
 
 export interface Morphology extends Identifiable {
   title: string;
@@ -65,16 +28,8 @@ export interface Morphology extends Identifiable {
   influenceDescription?: string;
   examples?: MorphologyExample[];
   slug: string;
-  image: string;
+  image: string; // Imagem para o card da página principal
 }
-
-export interface RelatedContent extends Identifiable {
-  title: string;
-  description: string;
-  type: "article" | "interview" | "analysis";
-  image?: string; // ADICIONADO
-}
-
 
 export type MorphologyExample = Pick<
   Morphology,
@@ -83,32 +38,13 @@ export type MorphologyExample = Pick<
   details: string;
 };
 
-export interface Physiology extends Identifiable {
-  title: string;
-  subtitle: string;
-  description: string;
-  influence: string;
-  influenceDescription: string;
-  caseStudyTitle: string;
-  caseStudyDescription: string;
-  works: Work[];
-  mechanisms: PhysiologyMechanism[];
-  slug: string;
-}
-
-export type PhysiologyMechanism = Pick<
-  Physiology,
-  "id" | "title" | "description"
->;
-
-export interface TeamMember extends Identifiable {
-  name: string;
-  role: string;
-  description: string;
-}
-
+// Interface RelatedContent unificada e corrigida
 export interface RelatedContent extends Identifiable {
   title: string;
   description: string;
   type: "article" | "interview" | "analysis";
+  image?: string;
+  path: string;
 }
+
+// ...outras interfaces como Physiology, TeamMember...

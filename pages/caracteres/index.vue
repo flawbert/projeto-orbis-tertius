@@ -62,6 +62,7 @@ const persons = ref([
     image: "/images/koreeda.png",
     roles: ["director", "writer"],
     slug: "koreeda",
+    category: "Cinema Japonês",
   },
   {
     title: "Entrevista: Nelson Pereira dos Santos",
@@ -70,6 +71,7 @@ const persons = ref([
     image: "/images/nelson.png",
     roles: ["director", "actor"],
     slug: "nelson-pereira",
+    category: "Cinema Brasileiro",
   },
   {
     title: "Entrevista: Kleber Mendonça Filho",
@@ -78,6 +80,7 @@ const persons = ref([
     image: "/images/kleber.png",
     roles: ["director", "writer", "visual-artist"],
     slug: "kleber",
+    category: "Cinema Brasileiro",
   },
   {
     title: "Entrevista: Celine Song",
@@ -86,6 +89,7 @@ const persons = ref([
     image: "/images/celine-song.png",
     roles: ["writer", "actor"],
     slug: "celine-song",
+    category: "Cinema Japonês",
   },
   {
     title: "Entrevista: Guilhermo del Toro",
@@ -94,6 +98,7 @@ const persons = ref([
     image: "/images/deltoro.png",
     roles: ["writer"],
     slug: "guilhermo-del-toro",
+    category: "Cinema Brasileiro",
   },
   {
     title: "Entrevista: Alfonso Cuarón",
@@ -102,6 +107,7 @@ const persons = ref([
     image: "/images/cuaron.png",
     roles: ["writer", "actor"],
     slug: "alfonso-cuaron",
+    category: "Cinema Japonês",
   },
 ]);
 

@@ -35,7 +35,6 @@ div
       .container
         .related-content
           h3.section-title.with-line Conteúdo Relacionado
-          //- ALTERADO: Voltamos à estrutura de cards, mas agora dentro de um NuxtLink
           .content-grid
             NuxtLink.content-card(
               v-for="content in relatedContent"
@@ -67,7 +66,7 @@ const morphology = computed(() => morphologyStore.currentMorphology);
 
 const relatedContent = ref<RelatedContent[]>([
   {
-    id: "1",
+    id: 1,
     title: "Artigos Acadêmicos",
     description: "Textos teóricos sobre montagem cinematográfica",
     type: "article",
@@ -75,7 +74,7 @@ const relatedContent = ref<RelatedContent[]>([
     path: "/artigos",
   },
   {
-    id: "2",
+    id: 2,
     title: "Entrevistas",
     description: "Conversas com editores e diretores",
     type: "interview",
@@ -83,7 +82,7 @@ const relatedContent = ref<RelatedContent[]>([
     path: "/entrevistas",
   },
   {
-    id: "3",
+    id: 3,
     title: "Análises Fílmicas",
     description: "Estudos de caso de filmes clássicos",
     type: "analysis",
@@ -122,6 +121,7 @@ onUnmounted(() => {
   }
 }
 
+/* PRIMEIRO AJUSTE AQUI */
 .section-title.with-line {
   position: relative;
   padding-bottom: $spacing-sm;
@@ -131,8 +131,8 @@ onUnmounted(() => {
     position: absolute;
     bottom: 0;
     left: 0;
-    width: 70px;
-    height: 4px;
+    width: 100%; /* Linha longa */
+    height: 1px; /* Linha fina */
     background-color: $primary-color;
   }
 }
@@ -208,16 +208,14 @@ section {
     margin: 0 auto;
   }
 
+  /* SEGUNDO AJUSTE AQUI */
   .related-content .section-title {
     font-size: 1.8rem;
     color: $primary-color;
-    text-align: center;
+    /* text-align: center; <-- LINHA REMOVIDA PARA ALINHAR À ESQUERDA */
     position: relative;
 
-    &::after {
-        left: 50%;
-        transform: translateX(-50%);
-    }
+    /* Bloco ::after removido pois a regra principal já faz o trabalho */
   }
 
   .content-grid {
