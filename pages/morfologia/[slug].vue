@@ -9,9 +9,7 @@ div
       p Erro: {{ morphologyStore.error }}
 
   div(v-else-if="morphology")
-    // O container principal agora envolve tanto a imagem quanto o cabeçalho
     .container
-      // 1. A IMAGEM FOI MOVIDA PARA DENTRO DO CONTAINER
       .main-image-container(v-if="morphology.mainImage")
           img(:src="morphology.mainImage" alt="Imagem principal da morfologia")
 

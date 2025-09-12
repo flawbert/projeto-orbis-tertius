@@ -89,11 +89,8 @@ const morphologySummaries = computed(() => morphologyStore.getMorphologySummarie
     margin-bottom: $spacing-md;
     color: $text-color;
     text-align: left;
-    /* ALTERAÇÃO AQUI: Linha mais fina */
     border-bottom: 1px solid $primary-color;
     padding-bottom: $spacing-sm;
-    /* REMOÇÃO AQUI: Para a linha ocupar a largura total */
-    /* display: inline-block; */
   }
 
   .morphology-grid {
