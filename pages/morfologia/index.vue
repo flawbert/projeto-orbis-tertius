@@ -12,62 +12,26 @@ div
 </template>
 
 <script setup lang="ts">
-import { ref } from "vue";
-import type { Morphology } from "~/types/index";
+import { ref, computed } from "vue";
+import { useMorphologyStore } from "~/store/morphology";
 
 useHead({
   title: "Orbis Tertius - Morfologia",
 });
 
 const morphologyDescription = ref(
-  "It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout. The point of using Lorem Ipsum is that it has a more-or-less normal distribution of letters, as opposed to using Content here, content here, making it look like readable English. It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout."
+  "Uma abordagem sobre as formas e estruturas que constroem a linguagem cinematográfica. Explore como técnicas de montagem, movimentos de câmera e encenação criam significado e impactam a percepção do espectador."
 );
 
-// Os slugs aqui devem corresponder EXATAMENTE aos slugs no arquivo morphology.ts
-const morphologyItems = ref<Morphology[]>([
-  {
-    id: 1,
-    title: "Morfologia da Montagem",
-    influence: "Influência: Sergei Eisenstein",
-    slug: "montagem",
-    image: "/images/morfologia_montagem.jpg",
-  },
-  {
-    id: 2,
-    title: "Morfologia do Plano-Sequência",
-    influence: "Influência: André Bazin / Realismo",
-    slug: "plano-sequencia",
-    image: "/images/morfologia_planosequencia.jpg",
-  },
-  {
-    id: 3,
-    title: "Morfologia do Cinema de Atrações",
-    influence: "Influência: Tom Gunning / Cinema primitivo",
-    slug: "cinema-de-atracoes",
-    image: "/images/morfologia_cinemaatracoes.jpg",
-  },
-  {
-    id: 4,
-    title: "Morfologia do PLANO-SEQUÊNCIA",
-    influence: "Influência: André Bazin / Realismo",
-    slug: "plano-sequencia", // Slug repetido para exemplo
-    image: "/images/morfologia_planosequencia.jpg",
-  },
-  {
-    id: 5,
-    title: "Morfologia do CINEMA DE ATRAÇÕES",
-    influence: "Influência: Tom Gunning / Cinema primitivo",
-    slug: "cinema-de-atracoes", // Slug repetido para exemplo
-    image: "/images/morfologia_cinemaatracoes.jpg",
-  },
-  {
-    id: 6,
-    title: "Morfologia da MONTAGEM",
-    influence: "Influência: Sergei Eisenstein",
-    slug: "montagem", // Slug repetido para exemplo
-    image: "/images/morfologia_montagem.jpg",
-  },
-]);
+const morphologyStore = useMorphologyStore();
+
+if (morphologyStore.morphologies.length === 0) {
+  await morphologyStore.fetchMorphologies();
+}
+
+const morphologySummaries = computed(
+  () => morphologyStore.getMorphologySummaries
+);
 </script>
 
 <style lang="scss" scoped>
@@ -114,9 +78,8 @@ const morphologyItems = ref<Morphology[]>([
     margin-bottom: $spacing-md;
     color: $text-color;
     text-align: left;
-    border-bottom: 3px solid $primary-color;
+    border-bottom: 1px solid $primary-color;
     padding-bottom: $spacing-sm;
-    display: inline-block;
   }
 
   .morphology-grid {
