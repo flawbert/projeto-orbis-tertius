@@ -15,10 +15,50 @@ export interface NavbarItem {
 }
 
 interface Identifiable {
-  id: number; // Padronizado como number
+  id: number;
 }
 
-// ...outras interfaces como Interview, Category, Role, Character, Work...
+export interface Interview extends Identifiable {
+  title: string;
+  subtitle: string;
+  date: string;
+  slug?: string;
+  category: string;
+  url: string;
+}
+
+export interface Category extends Identifiable {
+  name: string;
+  description: string;
+  parent?: Category;
+}
+
+export interface Role extends Identifiable {
+  name: string;
+}
+
+
+
+export interface Character extends Identifiable {
+  name: string;
+  description: string;
+  fullDescription: string;
+  pdfAvailable: boolean;
+  profile: Blob;
+  image: string;
+  slug: string;
+  roles: string[];
+  works: Work[];
+  categories: Category[];
+
+}
+
+export interface Work extends Identifiable {
+  title: string;
+  date: Date | string;
+  image: string;
+  description?: string; 
+}
 
 export interface Morphology extends Identifiable {
   title: string;
@@ -28,7 +68,7 @@ export interface Morphology extends Identifiable {
   influenceDescription?: string;
   examples?: MorphologyExample[];
   slug: string;
-  image: string; // Imagem para o card da página principal
+  image: string;
 }
 
 export type MorphologyExample = Pick<
@@ -47,4 +87,26 @@ export interface RelatedContent extends Identifiable {
   path: string;
 }
 
-// ...outras interfaces como Physiology, TeamMember...
+export interface Physiology extends Identifiable {
+  title: string;
+  subtitle: string;
+  description: string;
+  influence: string;
+  influenceDescription: string;
+  caseStudyTitle: string;
+  caseStudyDescription: string;
+  works: Work[];
+  mechanisms: PhysiologyMechanism[];
+  slug: string;
+}
+
+export type PhysiologyMechanism = Pick<
+Physiology,
+"id" | "title" | "description"
+>;
+
+export interface TeamMember extends Identifiable {
+  name: string;
+  role: string;
+  description: string;
+}
