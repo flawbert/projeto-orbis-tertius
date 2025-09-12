@@ -119,8 +119,7 @@ const filteredPersons = computed(() => {
   return persons.value.filter((p) => {
     const matchesSearch =
       searchQuery.value === "" ||
-      p.title.toLowerCase().includes(searchQuery.value.toLowerCase()) ||
-      p.subtitle.toLowerCase().includes(searchQuery.value.toLowerCase());
+      p.title.toLowerCase().includes(searchQuery.value.toLowerCase());
 
     const matchesCategory =
       selectedCategory.value === "Categorias" ||
