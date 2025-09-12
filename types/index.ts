@@ -21,7 +21,7 @@ interface Identifiable {
 export interface Interview extends Identifiable {
   title: string;
   subtitle: string;
-  date: string;
+  date: string | Date;
   slug?: string;
   category: string;
   url: string;
@@ -74,7 +74,6 @@ export interface RelatedContent extends Identifiable {
   type: "article" | "interview" | "analysis";
   image?: string; // ADICIONADO
 }
-
 
 export type MorphologyExample = Pick<
   Morphology,

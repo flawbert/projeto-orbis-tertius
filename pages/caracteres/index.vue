@@ -58,7 +58,7 @@ const persons = ref([
   {
     title: "Entrevista: Hirokazu Koreeda",
     subtitle: 'Diretor de "Monster"',
-    date: "Março 25, 2025",
+    date: new Date("2025-03-25"),
     image: "/images/koreeda.png",
     roles: ["director", "writer"],
     slug: "koreeda",
@@ -66,7 +66,7 @@ const persons = ref([
   {
     title: "Entrevista: Nelson Pereira dos Santos",
     subtitle: 'Diretor de "Vidas Secas"',
-    date: "Junho 25, 2010",
+    date: new Date("2010-06-25"),
     image: "/images/nelson.png",
     roles: ["director", "actor"],
     slug: "nelson-pereira",
@@ -74,7 +74,7 @@ const persons = ref([
   {
     title: "Entrevista: Kleber Mendonça Filho",
     subtitle: 'Diretor de "Bacurau"',
-    date: "Dezembro 25, 2025",
+    date: new Date("2025-12-25"),
     image: "/images/kleber.png",
     roles: ["director", "writer", "visual-artist"],
     slug: "kleber",
@@ -82,7 +82,7 @@ const persons = ref([
   {
     title: "Entrevista: Celine Song",
     subtitle: 'Roteirista de "Vidas Passadas"',
-    date: "Dezembro 24, 2024",
+    date: new Date("2024-12-24"),
     image: "/images/celine-song.png",
     roles: ["writer", "actor"],
     slug: "celine-song",
@@ -90,7 +90,7 @@ const persons = ref([
   {
     title: "Entrevista: Guilhermo del Toro",
     subtitle: 'Roteirista de "Pinóquio"',
-    date: "Fevereiro 12, 2023",
+    date: new Date("2023-02-12"),
     image: "/images/deltoro.png",
     roles: ["writer"],
     slug: "guilhermo-del-toro",
@@ -98,7 +98,7 @@ const persons = ref([
   {
     title: "Entrevista: Alfonso Cuarón",
     subtitle: 'Roteirista de "Roma"',
-    date: "Fevereiro 15, 2025",
+    date: new Date("2025-02-17"),
     image: "/images/cuaron.png",
     roles: ["writer", "actor"],
     slug: "alfonso-cuaron",

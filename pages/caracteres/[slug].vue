@@ -57,7 +57,6 @@
 </template>
 
 <script setup lang="ts">
-// import Divider from "~/components/Divider.vue";
 import { useCharactersStore } from "~/store/characters";
 import type { Character, Interview, Work } from "~/types";
 
@@ -75,7 +74,7 @@ if (slug === "celine-song") {
     {
       id: 1,
       title: "Vidas Passadas",
-      date: new Date(),
+      date: new Date("2025-01-01"),
       image: "/images/past-lifes.png",
     },
     {
@@ -111,7 +110,7 @@ const recommendedInterviews = ref<Interview[]>([
     id: "1",
     title: "Entrevista: Hirokazu Koreeda",
     subtitle: 'Diretor de "Monster"',
-    date: "Março 25, 2025",
+    date: new Date("2018-03-15"),
     category: "director",
     image: "/images/koreeda.png",
   },
@@ -119,7 +118,7 @@ const recommendedInterviews = ref<Interview[]>([
     id: "2",
     title: "Entrevista: Nelson Pereira dos Santos",
     subtitle: 'Diretor de "Vidas Secas"',
-    date: "Junho 25, 2010",
+    date: new Date("2010-07-25"),
     category: "director",
     image: "/images/nelson.png",
   },
@@ -127,7 +126,7 @@ const recommendedInterviews = ref<Interview[]>([
     id: "3",
     title: "Entrevista: Kleber Mendonça Filho",
     subtitle: 'Diretor de "Bacurau"',
-    date: "Dezembro 25, 2025",
+    date: new Date("2025-12-25"),
     category: "director",
     image: "/images/kleber.png",
   },

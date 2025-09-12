@@ -5,11 +5,11 @@
   .card-info
     h4 {{ title }}
     p.subtitle {{ subtitle }}
-    p.date {{ date }}
+    p.date {{ dateStr }}
 </template>
 
 <script setup>
-defineProps({
+const props = defineProps({
   title: {
     type: String,
     required: true,
@@ -19,7 +19,7 @@ defineProps({
     required: true,
   },
   date: {
-    type: String,
+    type: Date,
     required: true,
   },
   image: {
@@ -27,6 +27,8 @@ defineProps({
     required: true,
   },
 });
+
+const dateStr = computed(() => DateFormatter.toMDY(props.date));
 </script>
 
 <style lang="scss" scoped>

@@ -9,6 +9,7 @@
 
 <script setup lang="ts">
 import { computed } from "vue";
+import { DateFormatter } from "~/composables/date_formatter";
 
 const props = defineProps({
   title: {
@@ -17,7 +18,7 @@ const props = defineProps({
   },
   image: {
     type: String,
-    required: true,
+    required: false,
   },
   date: {
     type: Date,
@@ -29,27 +30,7 @@ const props = defineProps({
   },
 });
 
-const dateStr = computed(() => {
-  const months = [
-    "Janeiro",
-    "Fevereiro",
-    "Março",
-    "Abril",
-    "Maio",
-    "Junho",
-    "Julho",
-    "Agosto",
-    "Setembro",
-    "Outubro",
-    "Novembro",
-    "Dezembro",
-  ];
-  const day = props.date.getDate();
-  const month = months[props.date.getMonth()];
-  const year = props.date.getFullYear();
-
-  return `${month} ${day}, ${year}`;
-});
+const dateStr = computed(() => DateFormatter.toMDY(props.date));
 </script>
 
 <style lang="scss" scoped>

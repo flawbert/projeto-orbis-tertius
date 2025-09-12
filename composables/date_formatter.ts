@@ -16,7 +16,7 @@ export class DateFormatter {
 
   public static toMDY(date: Date): string {
     let month = DateFormatter.months[date.getMonth()];
-    let day = date.getDate();
+    let day = date.getUTCDate();
     let year = date.getFullYear();
 
     return `${month} ${day}, ${year}`;
