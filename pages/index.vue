@@ -27,7 +27,8 @@ section.page
         NuxtLink(to="/morfologia")
           Icon(name="extension", label="Morfologia")
       .icon-item
-        Icon(name="brain", label="Fisiologia")
+        NuxtLink(to="/fisiologia")
+          Icon(name="brain", label="Fisiologia")
       .icon-item
         Icon(name="video-camera", label="Produções Próprias")
 

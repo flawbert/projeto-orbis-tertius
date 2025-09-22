@@ -21,7 +21,7 @@ interface Identifiable {
 export interface Interview extends Identifiable {
   title: string;
   subtitle: string;
-  date: string;
+  date: string | Date;
   slug?: string;
   category: string;
   url: string;
@@ -37,8 +37,6 @@ export interface Role extends Identifiable {
   name: string;
 }
 
-
-
 export interface Character extends Identifiable {
   name: string;
   description: string;
@@ -50,14 +48,13 @@ export interface Character extends Identifiable {
   roles: string[];
   works: Work[];
   categories: Category[];
-
 }
 
 export interface Work extends Identifiable {
   title: string;
   date: Date | string;
   image: string;
-  description?: string; 
+  description?: string;
 }
 
 export interface Morphology extends Identifiable {
@@ -69,6 +66,13 @@ export interface Morphology extends Identifiable {
   examples?: MorphologyExample[];
   slug: string;
   image: string;
+}
+
+export interface RelatedContent extends Identifiable {
+  title: string;
+  description: string;
+  type: "article" | "interview" | "analysis";
+  image?: string; // ADICIONADO
 }
 
 export type MorphologyExample = Pick<
@@ -89,21 +93,13 @@ export interface RelatedContent extends Identifiable {
 
 export interface Physiology extends Identifiable {
   title: string;
-  subtitle: string;
-  description: string;
+  subtitle?: string;
+  description?: string;
+  image?: string;
   influence: string;
-  influenceDescription: string;
-  caseStudyTitle: string;
-  caseStudyDescription: string;
-  works: Work[];
-  mechanisms: PhysiologyMechanism[];
+  works?: Work[];
   slug: string;
 }
-
-export type PhysiologyMechanism = Pick<
-Physiology,
-"id" | "title" | "description"
->;
 
 export interface TeamMember extends Identifiable {
   name: string;

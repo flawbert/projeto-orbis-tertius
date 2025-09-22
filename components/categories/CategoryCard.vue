@@ -1,56 +1,54 @@
 <template lang="pug">
-.morphology-card
+.category-card
   img.card-image(v-if="image" :src="image" :alt="title")
   .card-content
     p.influence {{ influence }}
-    h3.morphology-title {{ title }}
+    h3.category-title {{ title }}
 </template>
 
 <script setup>
-
 defineProps({
   influence: {
     type: String,
-    required: true
+    required: true,
   },
   title: {
     type: String,
-    required: true
+    required: true,
   },
   image: {
     type: String,
-    required: false
+    required: false,
   },
 
   description: {
     type: String,
-    required: false
-  }
-})
+    required: false,
+  },
+});
 </script>
 
 <style lang="scss" scoped>
 @use "~/assets/css/variables" as *;
 
-.morphology-card {
+.category-card {
   background: white;
-  border-radius: 0; 
+  border-radius: 0;
   box-shadow: none;
   transition: all 0.3s ease;
-  border: none; 
+  border: none;
   display: flex;
   flex-direction: column;
   height: 100%;
 
   &:hover {
-
     transform: translateY(-5px);
   }
 
   .card-image {
     width: 100%;
-    height: 200px; 
-    object-fit: cover; 
+    height: 200px;
+    object-fit: cover;
   }
 
   .card-content {
@@ -59,18 +57,18 @@ defineProps({
 
   .influence {
     font-size: 0.9rem;
-    color: $neutral-dark; 
+    color: $neutral-dark;
     margin-bottom: $spacing-xs;
     font-style: normal;
   }
 
-  .morphology-title {
+  .category-title {
     font-size: 1.25rem;
-    color: #113272; 
+    color: #113272;
     font-weight: bold;
-    letter-spacing: normal; 
+    text-transform: uppercase;
+    letter-spacing: normal;
     line-height: 1.3;
   }
-
 }
 </style>

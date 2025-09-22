@@ -8,20 +8,7 @@ div
         h1.header-title O que é Morfologia no cinema?
         p.header-description {{ morphologyDescription }}
 
-  section.categories-section
-    .container
-      h2.section-title Categorias
-      .morphology-grid
-        NuxtLink(
-          v-for="item in morphologySummaries"
-          :key="item.id"
-          :to="`/morfologia/${item.slug}`"
-        )
-          MorphologyCard(
-            :title="item.title"
-            :influence="item.influence"
-            :image="item.image"
-          )
+  CategoriesSection(type="morphology" :items="morphologySummaries")
 </template>
 
 <script setup lang="ts">
@@ -42,7 +29,9 @@ if (morphologyStore.morphologies.length === 0) {
   await morphologyStore.fetchMorphologies();
 }
 
-const morphologySummaries = computed(() => morphologyStore.getMorphologySummaries);
+const morphologySummaries = computed(
+  () => morphologyStore.getMorphologySummaries
+);
 </script>
 
 <style lang="scss" scoped>

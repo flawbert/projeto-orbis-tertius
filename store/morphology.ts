@@ -1,48 +1,52 @@
-import { defineStore } from 'pinia'
-import type { Morphology, MorphologyExample, LoadingState } from '~/types'
-import { mockMorphologies } from '~/services/mock-data'
+import { defineStore } from "pinia";
+import { Mock } from "~/services/mock-data";
+import type { Morphology, MorphologyExample, LoadingState } from "~/types";
 
 interface CustomMorphologyExample extends MorphologyExample {
-  image?: string
+  image?: string;
 }
 
 interface CustomMorphology extends Morphology {
-  mainImage?: string
-  examples: CustomMorphologyExample[]
+  mainImage?: string;
+  examples: CustomMorphologyExample[];
 }
 
 interface MorphologyState extends LoadingState {
-  morphologies: CustomMorphology[]
-  currentMorphology: CustomMorphology | null
+  morphologies: CustomMorphology[];
+  currentMorphology: CustomMorphology | null;
 }
 
-export const useMorphologyStore = defineStore('morphology', {
+export const useMorphologyStore = defineStore("morphology", {
   state: (): MorphologyState => ({
     morphologies: [],
     currentMorphology: null,
     isLoading: false,
-    error: null
+    error: null,
   }),
 
   getters: {
     getMorphologyBySlug: (state) => {
       return (slug: string): CustomMorphology | undefined => {
-        return state.morphologies.find(morphology => morphology.slug === slug)
-      }
+        return state.morphologies.find(
+          (morphology) => morphology.slug === slug
+        );
+      };
     },
 
-    getMorphologySummaries: (state): Pick<Morphology, 'id' | 'title' | 'influence' | 'slug' | 'image'>[] => {
-      const uniqueSummaries = state.morphologies.map(m => {
+    getMorphologySummaries: (
+      state
+    ): Pick<Morphology, "id" | "title" | "influence" | "slug" | "image">[] => {
+      const uniqueSummaries = state.morphologies.map((m) => {
         let cardTitle: string;
-        
-        if (m.slug === 'montagem') {
-          cardTitle = 'Morfologia da MONTAGEM'; 
-        } else if (m.slug === 'plano-sequencia') {
-          cardTitle = 'Morfologia do PLANO-SEQUÊNCIA'; 
-        } else if (m.slug === 'cinema-de-atracoes') {
-          cardTitle = 'Morfologia do CINEMA DE ATRAÇÕES'; 
+
+        if (m.slug === "montagem") {
+          cardTitle = "Morfologia da MONTAGEM";
+        } else if (m.slug === "plano-sequencia") {
+          cardTitle = "Morfologia do PLANO-SEQUÊNCIA";
+        } else if (m.slug === "cinema-de-atracoes") {
+          cardTitle = "Morfologia do CINEMA DE ATRAÇÕES";
         } else {
-          cardTitle = m.title; 
+          cardTitle = m.title;
         }
 
         return {
@@ -54,23 +58,22 @@ export const useMorphologyStore = defineStore('morphology', {
         };
       });
 
-      const duplicatedSummaries = uniqueSummaries.map(item => ({
-          ...item,
-          id: item.id + 1000 
+      const duplicatedSummaries = uniqueSummaries.map((item) => ({
+        ...item,
+        id: item.id + 1000,
       }));
 
       const finalOrderSummaries = [
-          uniqueSummaries[0],
-          uniqueSummaries[1], 
-          uniqueSummaries[2],
-          uniqueSummaries[1],
-          uniqueSummaries[2],
-          uniqueSummaries[0],
+        uniqueSummaries[0],
+        uniqueSummaries[1],
+        uniqueSummaries[2],
+        uniqueSummaries[1],
+        uniqueSummaries[2],
+        uniqueSummaries[0],
       ].map((item, index) => ({
-          ...item,
-          id: index < 3 ? item.id : item.id + 1000 + index // Garante IDs únicos para todas as 6 posições
+        ...item,
+        id: index < 3 ? item.id : item.id + 1000 + index, // Garante IDs únicos para todas as 6 posições
       }));
-
 
       return finalOrderSummaries;
     },
@@ -78,44 +81,50 @@ export const useMorphologyStore = defineStore('morphology', {
 
   actions: {
     async fetchMorphologies(): Promise<void> {
-      this.isLoading = true
-      this.error = null
+      this.isLoading = true;
+      this.error = null;
       try {
-        await new Promise(resolve => setTimeout(resolve, 400))
-        this.morphologies = mockMorphologies as CustomMorphology[]
+        await new Promise((resolve) => setTimeout(resolve, 400));
+        this.morphologies = Mock.morphologies() as CustomMorphology[];
       } catch (error) {
-        this.error = error instanceof Error ? error.message : 'Erro ao carregar morfologias'
+        this.error =
+          error instanceof Error
+            ? error.message
+            : "Erro ao carregar morfologias";
       } finally {
-        this.isLoading = false
+        this.isLoading = false;
       }
     },
 
     async fetchMorphologyBySlug(slug: string): Promise<void> {
-      this.isLoading = true
-      this.error = null
+      this.isLoading = true;
+      this.error = null;
       try {
         if (this.morphologies.length === 0) {
-          await this.fetchMorphologies()
+          await this.fetchMorphologies();
         }
-        const morphology = this.getMorphologyBySlug(slug)
+        const morphology = this.getMorphologyBySlug(slug);
         if (morphology) {
-          this.currentMorphology = morphology
+          this.currentMorphology = morphology;
         } else {
-          throw new Error('Morfologia não encontrada')
+          throw new Error("Morfologia não encontrada");
         }
       } catch (error) {
-        this.error = error instanceof Error ? error.message : 'Erro ao carregar morfologia'
+        this.error =
+          error instanceof Error
+            ? error.message
+            : "Erro ao carregar morfologia";
       } finally {
-        this.isLoading = false
+        this.isLoading = false;
       }
     },
-    
+
     setCurrentMorphology(morphology: CustomMorphology | null): void {
-      this.currentMorphology = morphology
+      this.currentMorphology = morphology;
     },
 
     clearError(): void {
-      this.error = null
-    }
-  }
-})
+      this.error = null;
+    },
+  },
+});
