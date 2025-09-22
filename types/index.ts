@@ -37,24 +37,27 @@ export interface Role extends Identifiable {
   name: string;
 }
 
+
+
 export interface Character extends Identifiable {
   name: string;
   description: string;
   fullDescription: string;
   pdfAvailable: boolean;
   profile: Blob;
-  image: string; // Temporário por agora
+  image: string;
   slug: string;
-  roles: string[]; // Role[];
+  roles: string[];
   works: Work[];
   categories: Category[];
+
 }
 
 export interface Work extends Identifiable {
   title: string;
   date: Date | string;
   image: string;
-  description?: string;
+  description?: string; 
 }
 
 export interface Morphology extends Identifiable {
@@ -68,20 +71,21 @@ export interface Morphology extends Identifiable {
   image: string;
 }
 
-export interface RelatedContent extends Identifiable {
-  title: string;
-  description: string;
-  type: "article" | "interview" | "analysis";
-  image?: string; // ADICIONADO
-}
-
-
 export type MorphologyExample = Pick<
   Morphology,
   "id" | "title" | "description"
 > & {
   details: string;
 };
+
+// Interface RelatedContent unificada e corrigida
+export interface RelatedContent extends Identifiable {
+  title: string;
+  description: string;
+  type: "article" | "interview" | "analysis";
+  image?: string;
+  path: string;
+}
 
 export interface Physiology extends Identifiable {
   title: string;
@@ -97,18 +101,12 @@ export interface Physiology extends Identifiable {
 }
 
 export type PhysiologyMechanism = Pick<
-  Physiology,
-  "id" | "title" | "description"
+Physiology,
+"id" | "title" | "description"
 >;
 
 export interface TeamMember extends Identifiable {
   name: string;
   role: string;
   description: string;
-}
-
-export interface RelatedContent extends Identifiable {
-  title: string;
-  description: string;
-  type: "article" | "interview" | "analysis";
 }

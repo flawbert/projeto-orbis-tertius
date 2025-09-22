@@ -68,7 +68,6 @@ defineProps({
     font-size: 1.25rem;
     color: #113272; 
     font-weight: bold;
-    text-transform: uppercase;
     letter-spacing: normal; 
     line-height: 1.3;
   }
