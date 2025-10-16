@@ -1,3 +1,5 @@
+import type { Work } from "~/types";
+
 export class Mock {
   public static morphologies() {
     return [
@@ -116,11 +118,21 @@ export class Mock {
       {
         id: 1,
         title: "FISIOLOGIA DO SUSPENSE",
+        subtitle: "A Fisiologia do Medo",
+        description:
+          "It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout. It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout. It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout. It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout.",
         influence: "Influência: Alfred Hitchcock / Psicologia do Medo",
         slug: "suspense",
         image: "/images/fisiologia_suspense.png",
-        description:
-          "Estudo dos mecanismos psicológicos e físicos do suspense cinematográfico.",
+        mainImage: "/images/fisiologia_medo.png",
+        works: [
+          { id: 10, title: 'O Iluminado', date: '1980, Kubrick', image: '/images/fisiologia_main.png' },
+          { id: 11, title: 'Hereditário', date: '2018, Aster', image: '/images/hereditary.jpg' },
+          { id: 12, title: 'Corra!', date: '2017, Peele', image: '/images/getout.jpg' },
+          { id: 13, title: 'Psicose', date: '1960, Hitchcock', image: '/images/fisiologia_suspense.png' },
+          { id: 14, title: 'O Silêncio dos Inocentes', date: '1991, Demme', image: '/images/osilenciodosinocentes.jpg' },
+          { id: 15, title: 'A Bruxa', date: '2015, Eggers', image: '/images/thewitch.jpg' }
+        ] as Work[],
       },
       {
         id: 2,
@@ -130,6 +142,15 @@ export class Mock {
         image: "/images/fisiologia_extase.png",
         description:
           "Análise das reações corporais e sensoriais provocadas pelo cinema.",
+        mainImage: "/images/fisiologia_medo.png",
+        works: [
+          { id: 10, title: 'O Iluminado', date: '1980, Kubrick', image: '/images/fisiologia_main.png' },
+          { id: 11, title: 'Hereditário', date: '2018, Aster', image: '/images/hereditary.jpg' },
+          { id: 12, title: 'Corra!', date: '2017, Peele', image: '/images/getout.jpg' },
+          { id: 13, title: 'Psicose', date: '1960, Hitchcock', image: '/images/fisiologia_suspense.png' },
+          { id: 14, title: 'O Silêncio dos Inocentes', date: '1991, Demme', image: '/images/osilenciodosinocentes.jpg' },
+          { id: 15, title: 'A Bruxa', date: '2015, Eggers', image: '/images/thewitch.jpg' }
+        ] as Work[],
       },
       {
         id: 3,
@@ -139,6 +160,15 @@ export class Mock {
         image: "/images/fisiologia_terror_corporal.png",
         description:
           "Investigação do horror visceral e suas manifestações físicas.",
+          mainImage: "/images/fisiologia_medo.png",
+        works: [
+          { id: 10, title: 'O Iluminado', date: '1980, Kubrick', image: '/images/fisiologia_main.png' },
+          { id: 11, title: 'Hereditário', date: '2018, Aster', image: '/images/hereditary.jpg' },
+          { id: 12, title: 'Corra!', date: '2017, Peele', image: '/images/getout.jpg' },
+          { id: 13, title: 'Psicose', date: '1960, Hitchcock', image: '/images/fisiologia_suspense.png' },
+          { id: 14, title: 'O Silêncio dos Inocentes', date: '1991, Demme', image: '/images/osilenciodosinocentes.jpg' },
+          { id: 15, title: 'A Bruxa', date: '2015, Eggers', image: '/images/thewitch.jpg' }
+        ] as Work[],
       },
     ];
   }
