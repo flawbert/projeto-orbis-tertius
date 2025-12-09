@@ -68,13 +68,6 @@ export interface Morphology extends Identifiable {
   image: string;
 }
 
-export interface RelatedContent extends Identifiable {
-  title: string;
-  description: string;
-  type: "article" | "interview" | "analysis";
-  image?: string; // ADICIONADO
-}
-
 export type MorphologyExample = Pick<
   Morphology,
   "id" | "title" | "description"
@@ -95,6 +88,7 @@ export interface Physiology extends Identifiable {
   title: string;
   subtitle?: string;
   description?: string;
+  mainImage?: string; 
   image?: string;
   influence: string;
   works?: Work[];

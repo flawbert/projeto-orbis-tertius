@@ -13,7 +13,7 @@ div
 </template>
 
 <script setup lang="ts">
-import { ref } from "vue";
+import { ref, computed } from "vue";
 import CategoriesSection from "~/components/categories/CategoriesSection.vue";
 import { Mock } from "~/services/mock-data";
 import { usePhysiologyStore } from "~/store/physiology";
@@ -33,7 +33,8 @@ if (physiologyStore.physiologies.length == 0) {
 
 const physiologyItems = computed(() => {
   // physiologyStore.getAllPhysiologies; FIXME: trocar pra usar store
-  return Mock.physiologies();
+  const originalPhysiologies = Mock.physiologies();
+  return [...originalPhysiologies, ...originalPhysiologies];
 });
 </script>
 

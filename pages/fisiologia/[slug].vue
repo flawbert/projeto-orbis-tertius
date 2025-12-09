@@ -1,59 +1,66 @@
 <template lang="pug">
 div
-  //- div(v-if="physiologyStore.isLoading")
-  //-   .loading-container
-  //-     p Carregando...
+  div(v-if="physiologyStore.isLoading")
+    .loading-container
+      p Carregando...
 
-  //- div(v-else-if="physiologyStore.error")
-  //-   .error-container
-  //-     p Erro: {{ physiologyStore.error }}
+  div(v-else-if="physiologyStore.error")
+    .error-container
+      p Erro: {{ physiologyStore.error }}
 
-  //- div(v-else-if="physiology")
-  //-   .main-image-container(v-if="physiology.mainImage")
-  //-       img(:src="physiology.mainImage" alt="Imagem principal da fisiologia")
+  div(v-else-if="physiology")
+    .main-image-container(v-if="physiology.mainImage")
+      img(:src="physiology.mainImage" alt="Imagem principal da fisiologia")
 
-  //-   .container
-  //-     PageHeader(
-  //-       :title="physiology.title"
-  //-       :description="physiology.subtitle"
-  //-       :description-text="physiology.description"
-  //-     )
+    .container
+      PageHeader(
+        :title="physiology.subtitle"
+        :description-text="physiology.description"
+      )
 
-  //-   section.physiology-details.white-background
-  //-     .container
-  //-       .examples-section(v-if="physiology.examples && physiology.examples.length > 0")
-  //-         h3.section-title.with-line Exemplos e Análises
-  //-         .examples-grid
-  //-           .example-card(v-for="example in physiology.examples" :key="example.id")
-  //-             img.example-image(v-if="example.image" :src="example.image" :alt="`Imagem para ${example.title}`")
-  //-             .card-content
-  //-               h4 {{ example.title }}
-  //-               p.example-description {{ example.description }}
-  //-               .example-details {{ example.details }}
+      section.works-section(v-if="physiology.works && physiology.works.length > 0")
+        //- O comentário foi removido da linha abaixo
+        CardCarousel(
+          title="Obras"
+          :items-count="physiology.works.length"
+          :visible-cards="3" 
+        )
+          WorkCard(
+            v-for="work in physiology.works"
+            :key="work.id"
+            :title="work.title"
+            :date="parseWorkDate(work.date)"
+            :image="work.image"
+          )
+    
+    section.interviews-section
+      .interviews-container
+        //- O comentário também precisa ser removido aqui, se houver
+        CardCarousel(
+          title="Entrevistas recomendadas dessa categoria"
+          :items-count="recommendedInterviews.length"
+          :visible-cards="3"
+        )
+          InterviewCard(
+            v-for="interview in recommendedInterviews"
+            :key="interview.id"
+            :title="interview.title"
+            :subtitle="interview.subtitle"
+            :date="interview.date"
+            :image="interview.image"
+          )
 
-  //-   section.related-content-section
-  //-     .container
-  //-       .related-content
-  //-         h3.section-title.with-line Conteúdo Relacionado
-  //-         .content-grid
-  //-           NuxtLink.content-card(
-  //-             v-for="content in relatedContent"
-  //-             :key="content.id"
-  //-             :to="content.path"
-  //-           )
-  //-             img.content-image(v-if="content.image" :src="content.image" :alt="content.title")
-  //-             .content-text
-  //-               h4 {{ content.title }}
-  //-               p {{ content.description }}
-
-  //- div(v-else)
-  .not-found-container
-    p Fisiologia não encontrada
+  div(v-else)
+    .not-found-container
+      p Fisiologia não encontrada
 </template>
 
 <script setup lang="ts">
 import { usePhysiologyStore } from "~/store/physiology";
-import type { RelatedContent } from "~/types";
+import type { Interview } from "~/types";
+import CardCarousel from "~/components/CardCarousel.vue";
+import WorkCard from "~/components/WorkCard.vue";
+import InterviewCard from "~/components/InterviewCard.vue";
 
 const route = useRoute();
 const physiologyStore = usePhysiologyStore();
@@ -64,30 +71,63 @@ await physiologyStore.fetchPhysiologyBySlug(slug);
 
 const physiology = computed(() => physiologyStore.currentPhysiology);
 
-const relatedContent = ref<RelatedContent[]>([
+// Função para converter a string de data do work para Date
+const parseWorkDate = (dateStr: string): Date => {
+  // Se a data está no formato "1980, Kubrick", extrai o ano
+  const yearMatch = dateStr.match(/(\d{4})/);
+  if (yearMatch) {
+    return new Date(`${yearMatch[1]}-01-01`);
+  }
+  // Caso contrário, tenta fazer parse direto
+  return new Date(dateStr);
+};
+
+const recommendedInterviews = ref<Interview[]>([
   {
     id: "1",
-    title: "Artigos Acadêmicos",
-    description: "Textos teóricos sobre montagem cinematográfica",
-    type: "article",
-    image: "/images/artigos-academicos.jpeg",
-    path: "/artigos",
+    title: "Entrevista: Hirokazu Koreeda",
+    subtitle: 'Diretor de "Monster"',
+    date: new Date("2018-03-15"),
+    slug: "koreeda",
+    category: "director",
+    image: "/images/koreeda.png",
   },
   {
     id: "2",
-    title: "Entrevistas",
-    description: "Conversas com editores e diretores",
-    type: "interview",
-    image: "/images/entrevistas.jpeg",
-    path: "/entrevistas",
+    title: "Entrevista: Nelson Pereira dos Santos",
+    subtitle: 'Diretor de "Vidas Secas"',
+    date: new Date("2010-07-25"),
+    slug: "nelson-pereira",
+    category: "director",
+    image: "/images/nelson.png",
   },
   {
     id: "3",
-    title: "Análises Fílmicas",
-    description: "Estudos de caso de filmes clássicos",
-    type: "analysis",
-    image: "/images/analises-filmicas.jpeg",
-    path: "/analises",
+    title: "Entrevista: Kleber Mendonça Filho",
+    subtitle: 'Diretor de "Bacurau"',
+    date: new Date("2025-12-25"),
+    slug: "kleber",
+    category: "director",
+    image: "/images/kleber.png",
+  },
+  
+  {
+    id: "4",
+    title: "Entrevista: Ava DuVernay",
+    subtitle: 'Diretora de "Selma"',
+    date: new Date("2020-10-01"),
+    slug: "ava-duvernay",
+    category: "director",
+    image: "/images/ava.png",
+  },
+  {
+    id: "5",
+    title: "Entrevista: Bong Joon-ho",
+    subtitle: 'Diretor de "Parasita"',
+    date: new Date("2021-04-20"),
+    slug: "bong-joon-ho",
+    category: "director",
+    image: "/images/bong.png", 
   },
 ]);
 
@@ -106,6 +146,7 @@ onUnmounted(() => {
 
 <style lang="scss" scoped>
 @use "~/assets/css/variables" as *;
+@use "sass:color";
 
 .loading-container,
 .error-container,
@@ -129,164 +170,56 @@ onUnmounted(() => {
   width: 100%;
   max-height: 500px;
   overflow: hidden;
-  margin-top: 0;
   margin-bottom: $spacing-xl;
 
   img {
     width: 100%;
-    height: 100%;
+    height: auto;
     object-fit: cover;
   }
 }
 
-.section-title.with-line {
-  position: relative;
-  padding-bottom: $spacing-sm;
-  margin-bottom: $spacing-lg;
-  &::after {
-    content: "";
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    width: 70px;
-    height: 4px;
-    background-color: $primary-color;
-  }
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 $spacing-lg;
 }
 
-.white-background {
-  background-color: #ffffff;
-}
-
-section {
-  padding: $spacing-xl 0;
-}
-
-.physiology-details {
-  padding-top: 0;
-}
-
-.examples-section {
+.works-section {
+  margin-top: $spacing-xl;
   margin-bottom: $spacing-xl;
 }
 
-.examples-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-  gap: $spacing-lg;
-}
-
-.example-card {
-  background: white;
-  border-radius: 8px;
-  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
-  transition: transform 0.3s ease;
-  overflow: hidden;
-
-  &:hover {
-    transform: translateY(-5px);
-  }
-
-  .example-image {
-    width: 100%;
-    aspect-ratio: 16 / 9;
-    object-fit: cover;
-  }
-
-  .card-content {
-    padding: $spacing-lg;
-  }
-
-  h4 {
-    font-size: 1.2rem;
-    margin-bottom: $spacing-sm;
-    color: $primary-color;
-  }
-
-  .example-description {
-    line-height: 1.5;
-    margin-bottom: $spacing-sm;
-    color: $text-color;
-  }
-
-  .example-details {
-    font-size: 0.9rem;
-    color: $accent-color;
-    font-style: italic;
-  }
-}
-
-.related-content-section {
-  background-color: #dae6f2;
+.interviews-section {
+  background-color: #e8f0f7;
   padding: $spacing-xl 0;
+  margin-top: $spacing-xl;
 
-  .container {
+  .interviews-container {
     max-width: 1200px;
     margin: 0 auto;
-  }
-
-  .related-content .section-title {
-    font-size: 1.8rem;
-    color: $primary-color;
-    text-align: center;
-    position: relative;
-
-    &::after {
-      left: 50%;
-      transform: translateX(-50%);
-    }
-  }
-
-  .content-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-    gap: $spacing-lg;
-    margin-top: $spacing-lg;
-  }
-
-  .content-card {
-    background: #ffffff;
-    border-radius: 8px;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
-    overflow: hidden;
-    text-decoration: none;
-    display: flex;
-    flex-direction: column;
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
-
-    &:hover {
-      transform: translateY(-5px);
-      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.12);
-    }
-  }
-
-  .content-image {
-    width: 100%;
-    height: 180px;
-    object-fit: cover;
-  }
-
-  .content-text {
-    padding: $spacing-lg;
-    text-align: left;
-  }
-
-  .content-text h4 {
-    font-size: 1.2rem;
-    margin-bottom: $spacing-sm;
-    color: $primary-color;
-  }
-
-  .content-text p {
-    color: $text-color;
-    line-height: 1.5;
+    padding: 0 $spacing-lg;
   }
 }
 
-@media (max-width: $mobile) {
-  .examples-grid,
-  .content-grid {
-    grid-template-columns: 1fr;
+@media (max-width: 768px) {
+  .container,
+  .interviews-container {
+    padding: 0 $spacing-md;
+  }
+
+  .main-image-container {
+    max-height: 300px;
+  }
+
+  .works-section {
+    margin-top: $spacing-lg;
+    margin-bottom: $spacing-lg;
+  }
+
+  .interviews-section {
+    padding: $spacing-lg 0;
+    margin-top: $spacing-lg;
   }
 }
 </style>
