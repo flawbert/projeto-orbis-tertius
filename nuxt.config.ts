@@ -1,4 +1,12 @@
 export default defineNuxtConfig({
+
+  runtimeConfig: {
+    public: {
+      gestoreApiUrl: process.env.GESTORE_API_URL,
+      gestoreApiKey: process.env.GESTORE_API_KEY,
+    },
+  },
+
   devtools: { enabled: true },
   typescript: {
     strict: true,
