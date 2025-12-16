@@ -30,6 +30,7 @@ section.page
         NuxtLink(to="/fisiologia")
           Icon(name="brain", label="Fisiologia")
       .icon-item
+        NuxtLink(to="/producoes")
         Icon(name="video-camera", label="Produções Próprias")
 
 </template>

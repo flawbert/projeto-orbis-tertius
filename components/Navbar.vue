@@ -18,9 +18,11 @@ header.header
 import type { NavbarItem } from "~/types";
 
 const navbarItems = ref<NavbarItem[]>([
+  { name: "Quem Somos", path: "/quem-somos" },
   { name: "Caracteres", path: "/caracteres" },
   { name: "Morfologia", path: "/morfologia" },
   { name: "Fisiologia", path: "/fisiologia" },
+  { name: "Produções Próprias", path: "/producoes" },
 ]);
 </script>
 
