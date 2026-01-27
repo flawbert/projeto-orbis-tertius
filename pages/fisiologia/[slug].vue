@@ -19,7 +19,6 @@ div
       )
 
       section.works-section(v-if="physiology.works && physiology.works.length > 0")
-        //- O comentário foi removido da linha abaixo
         CardCarousel(
           title="Obras"
           :items-count="physiology.works.length"
@@ -35,7 +34,6 @@ div
     
     section.interviews-section
       .interviews-container
-        //- O comentário também precisa ser removido aqui, se houver
         CardCarousel(
           title="Entrevistas recomendadas dessa categoria"
           :items-count="recommendedInterviews.length"

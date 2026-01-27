@@ -1,440 +1,286 @@
-<template>
-  <div class="producoes">
-    <PageHeader title="Produções" />
+<template lang="pug">
+.producoes-proprias-page
+  .page-header
+  .page-spacing
 
-    <div class="container layout-grid">
-      <aside class="sidebar">
-        <div class="filter-group search-group">
-          <h3 class="filter-title">Pesquisar</h3>
-          <div class="search-input-wrapper">
-            <input 
-              v-model="searchQuery" 
-              type="text" 
-              placeholder="Buscar produções..." 
-              class="search-input"
-            />
-            <img src="/images/icons/search.svg" alt="Buscar" class="search-icon" />
-          </div>
-        </div>
+  main.main-content
 
-        <Divider class="sidebar-divider" />
+    section.filters-wrapper
+      .filters-container
+        .search-box
+          input(type="text" placeholder="ex: Walter Salles" v-model="searchQuery")
+        .filter-selects
+          .select-wrapper.categories
+            select(v-model="selectedCategory")
+              option(v-for="cat in categories" :key="cat" :value="cat") {{ cat }}
+          .select-wrapper.roles
+            select(v-model="selectedRole")
+              option(v-for="role in roles" :key="role" :value="role") {{ role }}
 
-        <div class="filter-group">
-          <h3 class="filter-title">Categorias</h3>
-          <ul class="filter-list">
-            <li v-for="category in categories" :key="category.id" class="filter-item">
-              <label class="checkbox-label">
-                <input 
-                  type="checkbox" 
-                  :value="category.id" 
-                  v-model="selectedCategories"
-                >
-                <span class="checkbox-custom"></span>
-                <span class="label-text">{{ category.label }}</span>
-              </label>
-            </li>
-          </ul>
-        </div>
+    section.content-section
+      //- SEÇÃO DE VÍDEOS
+      .section-group
+        .section-header
+          h2.section-title Vídeos
+          .section-divider
+        
+        .carousel-wrapper
+          button.carousel-arrow.prev(@click="scrollCarousel('videos', -1)" aria-label="Anterior")
+            svg(width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3")
+              polyline(points="15 18 9 12 15 6")
 
-        <Divider class="sidebar-divider" />
+          .carousel-track-container(ref="videosTrack")
+            .carousel-track
+              article.video-card(v-for="video in videos" :key="video.id")
+                .thumb-container
+                  img(:src="video.thumbnail" :alt="video.title")
+                .card-info
+                  h3 {{ video.title }}
+                  p {{ video.date }}
 
-        <div class="filter-group">
-          <h3 class="filter-title">Tipos</h3>
-          <ul class="filter-list">
-            <li v-for="type in types" :key="type.id" class="filter-item">
-              <label class="checkbox-label">
-                <input 
-                  type="checkbox" 
-                  :value="type.id" 
-                  v-model="selectedTypes"
-                >
-                <span class="checkbox-custom"></span>
-                <span class="label-text">{{ type.label }}</span>
-              </label>
-            </li>
-          </ul>
-        </div>
-      </aside>
+          button.carousel-arrow.next(@click="scrollCarousel('videos', 1)" aria-label="Próximo")
+            svg(width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3")
+              polyline(points="9 18 15 12 9 6")
 
-      <main class="content">
-        <div v-if="filteredProductions.length > 0" class="productions-grid">
-          <article 
-            v-for="prod in filteredProductions" 
-            :key="prod.id" 
-            class="production-card"
-          >
-            <div class="card-image-wrapper">
-              <img 
-                :src="prod.image" 
-                :alt="prod.title" 
-                class="card-image"
-              />
-              <span class="card-tag">{{ getCategoryLabel(prod.categoryId) }}</span>
-            </div>
+      //- SEÇÃO DE ARTIGOS
+      .section-group
+        .section-header
+          h2.section-title Artigos
+          .section-divider
+        
+        .carousel-wrapper
+          button.carousel-arrow.prev(@click="scrollCarousel('articles', -1)" aria-label="Anterior")
+            svg(width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3")
+              polyline(points="15 18 9 12 15 6")
 
-            <div class="card-content">
-              <h3 class="card-title">{{ prod.title }}</h3>
-              <p class="card-excerpt">{{ prod.excerpt }}</p>
-              
-              <NuxtLink :to="`/producoes/${prod.slug}`" class="card-link">
-                Ler mais
-                <span class="arrow">→</span>
-              </NuxtLink>
-            </div>
-          </article>
-        </div>
+          .carousel-track-container(ref="articlesTrack")
+            .carousel-track
+              article.article-card(v-for="article in articles" :key="article.id")
+                img.article-img(:src="article.image" :alt="article.title")
+                .card-info
+                  p.authors {{ article.authors }}
+                  h3 {{ article.title }}
+                  p.desc {{ article.description }}
 
-        <div v-else class="empty-state">
-          <p>Nenhuma produção encontrada com os filtros selecionados.</p>
-        </div>
-      </main>
-    </div>
-  </div>
+          button.carousel-arrow.next(@click="scrollCarousel('articles', 1)" aria-label="Próximo")
+            svg(width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3")
+              polyline(points="9 18 15 12 9 6")
 </template>
 
 <script setup lang="ts">
-// Definição das Interfaces
-interface Category {
-  id: string;
-  label: string;
-}
+import { ref } from 'vue'
 
-interface Type {
-  id: string;
-  label: string;
-}
+const searchQuery = ref("");
+const selectedCategory = ref("Categorias");
+const selectedRole = ref("Tipos");
 
-interface Production {
-  id: number;
-  title: string;
-  slug: string;
-  excerpt: string;
-  categoryId: string;
-  typeId: string;
-  image: string; // Caminho da imagem
-}
-
-// Estados dos Filtros
-const searchQuery = ref('');
-const selectedCategories = ref<string[]>([]);
-const selectedTypes = ref<string[]>([]);
-
-// Dados Estáticos (Mock Data) - Adicione suas imagens reais aqui
-const categories: Category[] = [
-  { id: 'analises', label: 'Análises Fílmicas' },
-  { id: 'artigos', label: 'Artigos Acadêmicos' },
-  { id: 'entrevistas', label: 'Entrevistas' },
-  { id: 'criticas', label: 'Críticas' },
-];
-
-const types: Type[] = [
-  { id: 'texto', label: 'Texto' },
-  { id: 'video', label: 'Vídeo' },
-  { id: 'audio', label: 'Áudio' },
-];
-
-// LISTA DE PRODUÇÕES (Adicione seus dados aqui)
-const productions = ref<Production[]>([
-  {
-    id: 1,
-    title: 'A Marca da Maldade: Uma análise técnica',
-    slug: 'a-marca-da-maldade',
-    excerpt: 'Uma exploração profunda sobre o uso de planos-sequência e a construção de tensão na obra clássica de Orson Welles.',
-    categoryId: 'analises',
-    typeId: 'texto',
-    image: '/images/amarcadamaldade.jpg' // Verifique se essa imagem existe em public/images/
-  },
-  {
-    id: 2,
-    title: 'Entrevista com Kleber Mendonça Filho',
-    slug: 'entrevista-kleber',
-    excerpt: 'Conversamos com o diretor sobre as novas tendências do cinema pernambucano e sua projeção internacional.',
-    categoryId: 'entrevistas',
-    typeId: 'video',
-    image: '/images/kleber.png'
-  },
-  {
-    id: 3,
-    title: 'O Silêncio dos Inocentes e o olhar',
-    slug: 'silencio-inocentes',
-    excerpt: 'Como o diretor Jonathan Demme utiliza close-ups frontais para criar uma atmosfera de intimidade e desconforto.',
-    categoryId: 'analises',
-    typeId: 'texto',
-    image: '/images/osilenciodosinocentes.jpg'
-  },
-  {
-    id: 4,
-    title: 'A evolução do terror psicológico',
-    slug: 'terror-psicologico',
-    excerpt: 'Artigo acadêmico debatendo as mudanças de paradigma no gênero terror na última década.',
-    categoryId: 'artigos',
-    typeId: 'texto',
-    image: '/images/hereditary.jpg'
-  },
-  {
-    id: 5,
-    title: 'Crítica: Vidas Passadas',
-    slug: 'vidas-passadas',
-    excerpt: 'Uma análise sobre as escolhas, o destino e a linguagem silenciosa do amor no filme de Celine Song.',
-    categoryId: 'criticas',
-    typeId: 'texto',
-    image: '/images/past-lifes.png'
-  }
+const categories = ref([
+  "Categorias",
+  "Fisiologia do Medo",
+  "Morfologia do Plano Sequência",
+]);
+const roles = ref([
+  "Tipos",
+  "Diretores",
+  "Roteiristas",
+  "Atores",
+  "Artistas Visuais",
 ]);
 
-// Lógica de Filtragem (Computed)
-const filteredProductions = computed(() => {
-  return productions.value.filter(prod => {
-    // 1. Filtro de Texto
-    const matchesSearch = prod.title.toLowerCase().includes(searchQuery.value.toLowerCase()) || 
-                          prod.excerpt.toLowerCase().includes(searchQuery.value.toLowerCase());
+const videosTrack = ref<HTMLElement | null>(null)
+const articlesTrack = ref<HTMLElement | null>(null)
 
-    // 2. Filtro de Categoria
-    const matchesCategory = selectedCategories.value.length === 0 || 
-                            selectedCategories.value.includes(prod.categoryId);
+// Dados simulados
+const videos = ref([
+  { id: 1, title: 'Entrevista: Hirokazu Koreeda', date: 'Março 25, 2025', thumbnail: '/images/koreeda.png' },
+  { id: 2, title: 'Entrevista: Nelson Pereira dos Santos', date: 'Junho 25, 2010', thumbnail: '/images/nelson.png' },
+  { id: 3, title: 'Entrevista: Kleber Mendonça Filho', date: 'Dezembro 25, 2025', thumbnail: '/images/kleber.png' },
+  { id: 4, title: 'Entrevista: Walter Salles', date: 'Janeiro 10, 2026', thumbnail: '/images/walter.png' },
+  { id: 5, title: 'Entrevista: Fernando Meirelles', date: 'Fevereiro 15, 2026', thumbnail: '/images/meirelles.png' }
+])
 
-    // 3. Filtro de Tipo
-    const matchesType = selectedTypes.value.length === 0 || 
-                        selectedTypes.value.includes(prod.typeId);
+const articles = ref([
+  { id: 1, authors: 'Silva, A.; Oliveira, B.', title: 'A Linguagem Cinematográfica e a Construção de Sentidos', description: 'Análise da narrativa fílmica e elementos técnicos (enquadramento, montagem).', image: '/images/linguagem-cinema.png' },
+  { id: 2, authors: 'Johnson, C.; Lee, D.', title: 'Cinema e Representação Social: Gênero e Raça', description: 'Crítica à falta de representação em blockbusters.', image: '/images/analises-filmicas.jpeg' },
+  { id: 3, authors: 'Müller, E.; Santos, F.', title: 'O Impacto do Streaming na Indústria Cinematográfica', description: 'Mudanças nos hábitos de consumo pós Netflix.', image: '/images/netflixlogo.png' },
+  { id: 4, authors: 'Costa, G.', title: 'Cinema Novo', description: 'O movimento que mudou o Brasil.', image: '/images/cinemanovo.jpg' },
+  { id: 5, authors: 'Pereira, H.', title: 'Luz e Sombra', description: 'Técnicas de iluminação.', image: '/images/luzesombra.jpg' }
+])
 
-    return matchesSearch && matchesCategory && matchesType;
-  });
-});
-
-// Helper para pegar label da categoria
-const getCategoryLabel = (id: string) => {
-  return categories.find(c => c.id === id)?.label || 'Geral';
-};
+const scrollCarousel = (type: 'videos' | 'articles', direction: number) => {
+  const track = type === 'videos' ? videosTrack.value : articlesTrack.value
+  if (track) {
+    const scrollAmount = track.clientWidth * 0.8
+    track.scrollBy({
+      left: scrollAmount * direction,
+      behavior: 'smooth'
+    })
+  }
+}
 </script>
 
 <style lang="scss" scoped>
-@import '@/assets/css/variables.scss';
+$primary-blue: #164194;
+$dark-blue: #113272;
+$bg-light: #f8f8f8;
+$border-gray: #c6c6c6;
 
-.producoes-page {
-  padding-bottom: 4rem;
+.main-content {
+  padding: 0 10% 80px;
+  max-width: 1400px;
+  margin: 0 auto;
 }
 
-.layout-grid {
-  display: flex;
-  gap: 3rem;
-  margin-top: 3rem;
-
-  @media (max-width: 768px) {
-    flex-direction: column;
-  }
-}
-
-/* --- SIDEBAR --- */
-.sidebar {
-  width: 280px;
-  flex-shrink: 0;
-
-  @media (max-width: 768px) {
-    width: 100%;
-  }
-}
-
-.filter-group {
-  margin-bottom: 2rem;
-}
-
-.filter-title {
-  font-family: 'Times New Roman', serif; // Assumindo fonte serifada pelo design
-  font-size: 1.25rem;
-  font-weight: bold;
-  margin-bottom: 1rem;
-  color: #000;
-}
-
-.sidebar-divider {
-  margin: 1.5rem 0;
-  opacity: 0.3;
-}
-
-/* Busca */
-.search-input-wrapper {
-  position: relative;
-  display: flex;
-  align-items: center;
-}
-
-.search-input {
-  width: 100%;
-  padding: 0.75rem 2.5rem 0.75rem 1rem;
-  border: 1px solid #ddd;
-  border-radius: 4px;
-  font-size: 0.9rem;
-  transition: border-color 0.2s;
-
-  &:focus {
-    outline: none;
-    border-color: #666; // Cor de destaque suave
-  }
-}
-
-.search-icon {
-  position: absolute;
-  right: 10px;
-  width: 18px;
-  height: 18px;
-  opacity: 0.5;
-}
-
-/* Listas de Checkbox */
-.filter-list {
-  list-style: none;
-  padding: 0;
-  margin: 0;
-}
-
-.filter-item {
-  margin-bottom: 0.75rem;
-}
-
-.checkbox-label {
-  display: flex;
-  align-items: center;
-  cursor: pointer;
-  font-size: 0.95rem;
-  color: #333;
-
-  input {
-    display: none; // Esconde o checkbox padrão
-  }
-
-  // Checkbox Customizado
-  .checkbox-custom {
-    width: 18px;
-    height: 18px;
-    border: 1px solid #ccc;
-    border-radius: 3px;
-    margin-right: 10px;
+.filters-wrapper {
+  margin: 40px 0 60px;
+  
+  .filters-container {
     display: flex;
     align-items: center;
-    justify-content: center;
-    transition: all 0.2s;
+    gap: 20px;
+    width: 100%;
+  }
 
-    &::after {
-      content: '';
-      width: 10px;
-      height: 10px;
-      background-color: #000; // Cor da seleção
-      transform: scale(0);
-      transition: transform 0.2s;
+  .search-box {
+    flex: 3;
+    position: relative;
+    
+    input {
+      width: 100%;
+      height: 50px;
+      padding: 0 45px 0 20px;
+      border: 2px solid $border-gray;
+      border-radius: 10px;
+      background: $bg-light url("/images/icons/search.svg") no-repeat right 15px center;
+      background-size: 20px;
+      font-size: 16px;
+      color: #777;
+
+      &:focus {
+        outline: none;
+        border-color: $primary-blue;
+      }
     }
   }
 
-  input:checked + .checkbox-custom::after {
-    transform: scale(1);
+  .filter-selects {
+    display: flex;
+    gap: 15px;
+    flex: 1;
   }
-  
-  &:hover .checkbox-custom {
-    border-color: #999;
-  }
-}
 
-/* --- GRID DE CONTEÚDO --- */
-.content {
-  flex-grow: 1;
-}
-
-.productions-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-  gap: 2rem;
-}
-
-/* Cards */
-.production-card {
-  background: #fff;
-  border: 1px solid #eee;
-  border-radius: 8px;
-  overflow: hidden;
-  display: flex;
-  flex-direction: column;
-  transition: transform 0.2s, box-shadow 0.2s;
-
-  &:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 10px 20px rgba(0,0,0,0.05);
-  }
-}
-
-.card-image-wrapper {
-  position: relative;
-  height: 180px;
-  overflow: hidden;
-
-  .card-image {
+  .select-wrapper select {
+    appearance: none;
     width: 100%;
-    height: 100%;
-    object-fit: cover;
-    transition: transform 0.3s;
+    height: 45px;
+    padding: 0 35px 0 15px;
+    background: $primary-blue;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-weight: bold;
+    cursor: pointer;
+    background-image: url("/images/icons/arrow-down.svg");
+    background-repeat: no-repeat;
+    background-position: right 12px center;
+    background-size: 12px;
+
+    &:hover { filter: brightness(1.2); }
   }
-
-  &:hover .card-image {
-    transform: scale(1.05);
-  }
 }
 
-.card-tag {
-  position: absolute;
-  top: 10px;
-  right: 10px;
-  background: rgba(0, 0, 0, 0.7);
-  color: #fff;
-  font-size: 0.75rem;
-  padding: 4px 8px;
-  border-radius: 4px;
-  text-transform: uppercase;
-}
-
-.card-content {
-  padding: 1.5rem;
-  display: flex;
-  flex-direction: column;
-  flex-grow: 1;
-}
-
-.card-title {
-  font-size: 1.1rem;
-  font-weight: 700;
-  margin-bottom: 0.75rem;
-  line-height: 1.4;
-  color: #1a1a1a;
-}
-
-.card-excerpt {
-  font-size: 0.9rem;
-  color: #666;
-  margin-bottom: 1.5rem;
-  line-height: 1.6;
-  flex-grow: 1;
-}
-
-.card-link {
-  display: inline-flex;
-  align-items: center;
-  font-weight: 600;
-  color: #000;
-  text-decoration: none;
-  font-size: 0.9rem;
+.section-group {
+  margin-bottom: 50px;
   
-  .arrow {
-    margin-left: 6px;
-    transition: transform 0.2s;
+  .section-title {
+    font-size: 1.8rem;
+    color: $dark-blue;
+    margin: 0;
   }
 
-  &:hover .arrow {
-    transform: translateX(4px);
+  .section-divider {
+    width: 100%;
+    height: 1px;
+    background: $dark-blue;
+    margin: 10px 0 25px;
   }
 }
 
-.empty-state {
-  text-align: center;
-  padding: 4rem;
-  color: #888;
-  background: #f9f9f9;
-  border-radius: 8px;
+.carousel-wrapper {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  position: relative;
+
+  .carousel-track-container {
+    overflow: hidden;
+    flex: 1;
+  }
+
+  .carousel-track {
+    display: flex;
+    gap: 25px;
+    scroll-behavior: smooth;
+    flex-wrap: nowrap; 
+  }
+
+  .carousel-arrow {
+    flex-shrink: 0;
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    padding: 8px;
+    color: $dark-blue;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 10;
+
+    &:hover {
+      transform: scale(1.15);
+      opacity: 0.8;
+    }
+
+    svg {
+      width: 40px;
+      height: 40px;
+      stroke: currentColor;
+    }
+  }
+}
+
+.video-card, .article-card {
+  flex: 0 0 calc(33.333% - 17px);
+  cursor: pointer;
+  transition: transform 0.3s ease;
+
+  &:hover { transform: translateY(-5px); }
+  
+  .thumb-container {
+    height: 200px;
+    border-radius: 8px;
+    overflow: hidden;
+    img { width: 100%; height: 100%; object-fit: cover; }
+  }
+
+  .card-info {
+    padding: 15px 0;
+    h3 { color: $primary-blue; margin: 0 0 5px; font-size: 18px; }
+    p { color: #666; font-size: 14px; margin: 0; }
+  }
+}
+
+.article-img { width: 100%; height: 220px; object-fit: cover; border-radius: 8px; }
+
+@media (max-width: 1024px) {
+  .video-card, .article-card { flex: 0 0 calc(50% - 13px); }
+}
+
+@media (max-width: 768px) {
+  .main-content { padding: 0 5% 40px; }
+  .filters-container { flex-direction: column; }
+  .video-card, .article-card { flex: 0 0 100%; }
+  .carousel-arrow svg { width: 32px; height: 32px; }
 }
 </style>

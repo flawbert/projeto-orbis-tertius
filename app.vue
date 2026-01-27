@@ -10,7 +10,7 @@ NuxtLayout
         img(src="/images/LogoUFRNFooter.png")
         .footer-info
           p © Orbis Tertius, {{year}} 
-          p contato@autofigurações.com
+          p contato@orbistertius.com
           p Universidade Federal do Rio Grande do Norte
 </template>
 
